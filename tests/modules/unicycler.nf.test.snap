@@ -1,0 +1,23 @@
+{
+    "Should run without failures": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_id"
+                    },
+                    "test_id.scaffolds.fa:md5,845ae37a39ee6ea454f3830855cd450a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test_id"
+                    },
+                    "test_id.assembly.gfa:md5,24044b979d80e9ca4da184c5d1775d6d"
+                ]
+            ]
+        ],
+        "timestamp": "2023-02-18T11:42:37+0000"
+    }
+}

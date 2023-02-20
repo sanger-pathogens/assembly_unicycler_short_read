@@ -1,0 +1,30 @@
+nextflow_process {
+
+    name "Test Process UNICYCLER"
+    script "modules/unicycler.nf"
+    process "UNICYCLER"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                max_cpus   = "1"
+                max_memory = "2.GB"
+                max_time   = "1.h"
+                outdir = "${outputDir}"
+            }
+            process {
+                """
+                input[0] = [["id": "test_id"], [file("test_data/inputs/test_1.fastq.gz"), file("test_data/inputs/test_2.fastq.gz")]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out.scaffolds, process.out.gfa).match()
+        }
+
+    }
+
+}
