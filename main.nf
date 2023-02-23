@@ -98,7 +98,7 @@ workflow {
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
     //
-    ch_input = file(params.input)
+    ch_input = Channel.fromPath(params.input)
     INPUT_CHECK (
         ch_input
     )
