@@ -123,7 +123,7 @@ workflow {
         .collect()
         .set { ch_to_quast }
     QUAST (
-        ch_to_quast, [], [], false, false
+        ch_to_quast
     )
 }
 

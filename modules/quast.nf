@@ -6,24 +6,16 @@ process QUAST {
 
     input:
     path consensus
-    path fasta
-    path gff
-    val use_fasta
-    val use_gff
 
     output:
     path "${prefix}"    , emit: results
     path '*.tsv'        , emit: tsv
 
     script:
-    prefix        = 'other_files'
-    def features  = use_gff ? "--features $gff" : ''
-    def reference = use_fasta ? "-r $fasta" : ''
+    prefix = 'other_files'
     """
     quast.py \\
         --output-dir $prefix \\
-        $reference \\
-        $features \\
         --threads $task.cpus \\
         ${consensus.join(' ')}
     ln -s ${prefix}/report.tsv
