@@ -52,11 +52,20 @@ The pipeline performs assembly of short read data using [Unicycler](https://gith
 
 ## Generating a manifest
 
-Scripts have been developed to generate manifests appropriate for this pipeline.
+Manifests supplied as an argument to `--input`, should be of of the following format:
 
-To generate a manifest from a file of lane identifiers visible to `pf`, use [this script](https://gitlab.internal.sanger.ac.uk/sanger-pathogens/pipelines/metawrap_qc/-/blob/main/generate_manifest_from_lanes.sh).
+```console
+ID,R1,R2
+test_id,./test_data/inputs/test_1.fastq.gz,./test_data/inputs/test_2.fastq.gz
+```
 
-To generate a manifest from a file of custom .fastq.gz paths, use [this script](https://gitlab.internal.sanger.ac.uk/sanger-pathogens/pipelines/metawrap_qc/-/blob/main/generate_manifest.sh).
+Where column `ID` can be an arbitrary sample identifier, `R1` is a .fastq.gz file of forward reads, `R2` is the mate .fastq.gz file containing reverse reads. 
+
+Scripts have been developed to generate manifests appropriate for this pipeline:
+
+- To generate a manifest from a file of lane identifiers visible to `pf`, use [this script](https://gitlab.internal.sanger.ac.uk/sanger-pathogens/pipelines/metawrap_qc/-/blob/main/generate_manifest_from_lanes.sh).
+
+- To generate a manifest from a file of custom .fastq.gz paths, use [this script](https://gitlab.internal.sanger.ac.uk/sanger-pathogens/pipelines/metawrap_qc/-/blob/main/generate_manifest.sh).
 
 Please run `--help` on these scripts or see [this README](https://gitlab.internal.sanger.ac.uk/sanger-pathogens/pipelines/metawrap_qc#generating-manifests) for information on script usage.
 
