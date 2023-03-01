@@ -1,0 +1,36 @@
+def testData = new File("test_data")
+def inputs = new File(testData, "inputs")
+def outputs = new File(testData, "outputs")
+
+def verifyOutputs = { outputDir ->
+    def expectedDir = outputs
+    def actualDir = new File(outputDir)
+
+    println "\nPipeline run complete\nComparing `${expectedDir}` and `${actualDir}`..."
+
+    assert Compare.dirsConform(expectedDir, actualDir, UnicyclerShortreadCompare.&compare) :
+        "The pipeline output didn't match the expected output (generated in a previous pipeline run). See stderr for a more verbose report"
+}
+
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("Should execute the pipeline without failure") {
+
+        when {
+            params {
+                input = "${new File(inputs, "test_manifest.csv")}"
+                outdir = "${outputDir}"
+            }
+        }
+
+        then {
+            assert workflow.success
+            verifyOutputs(outputDir)
+        }
+
+    }
+
+}
