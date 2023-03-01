@@ -10,7 +10,7 @@ workflow INPUT_CHECK {
     Channel
         .fromPath( samplesheet )
         .ifEmpty {exit 1, log.info "Cannot find path file ${tsvFile}"}
-        .splitCsv ( header:true, sep:'\t' )
+        .splitCsv ( header:true, sep:',' )
         .map { create_fastq_channels(it) }
         .map { meta, reads -> [ meta, reads ] }
         .filter{ meta, reads -> reads != 'NA' }
