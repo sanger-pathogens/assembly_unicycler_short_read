@@ -1,7 +1,6 @@
 process UNICYCLER {
     tag "$meta.id"
     label 'process_high'
-    label 'error_retry'
     publishDir "${params.outdir}/unicycler", mode: 'copy', overwrite: true
 
     container "quay.io/biocontainers/unicycler:0.4.8--py38h8162308_3"
