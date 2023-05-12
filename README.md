@@ -29,17 +29,16 @@ The pipeline performs assembly of short read data using [Unicycler](https://gith
    ```
 
 3. Start the pipeline  
-   For example input, please see [Generating a manifest](#generating-a-manifest).  
-   Note: To use the appropriate Sanger configuration, please run with `-profile sanger_lsf` option.
+   For example input, please see [Generating a manifest](#generating-a-manifest).
 
    Example:
    ```bash
-   nextflow run . -profile sanger_lsf --input ./test_data/inputs/test_manifest.csv --outdir my_output
+   nextflow run . --input ./test_data/inputs/test_manifest.csv --outdir my_output
    ```
 
    It is good practice to submit a dedicated job for the nextflow master process (use the `oversubscribed` queue):
    ```bash
-   bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 nextflow run . -profile sanger_lsf --input ./test_data/inputs/test_manifest.csv --outdir my_output
+   bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 nextflow run . --input ./test_data/inputs/test_manifest.csv --outdir my_output
    ```
 
    See [usage](#usage) for all available pipeline options.
@@ -98,7 +97,7 @@ Developer contributions to this pipeline will only be accepted if all pipeline t
    nf-test test
    ```
 
-   If running on Sanger HPC cluster, add the option `--profile sanger_lsf`.
+   If you are not running on the Sanger HPC, run the above command with `--profile docker` or `--profile singularity` (depending on your system).
 
 ## Credits
 
