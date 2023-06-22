@@ -9,9 +9,9 @@ process UNICYCLER {
     tuple val(meta), file(reads)
 
     output:
-    tuple val(meta), path('*.scaffolds.fa'), emit: scaffolds
-    tuple val(meta), path('*.assembly.gfa'), emit: gfa
-    tuple val(meta), path('*.log')         , emit: log
+    tuple val(meta), path('*.assembly.fa')   , emit: assembly
+    tuple val(meta), path('*.assembly.gfa') , emit: gfa
+    tuple val(meta), path('*.log')          , emit: log
 
     script:
     def software    = 'unicycler'
@@ -23,7 +23,7 @@ process UNICYCLER {
         $input_reads \\
         --out ./
 
-    mv assembly.fasta ${prefix}.scaffolds.fa
+    mv assembly.fasta ${prefix}.assembly.fa
     mv assembly.gfa ${prefix}.assembly.gfa
     mv unicycler.log ${prefix}.unicycler.log
     """
