@@ -115,7 +115,7 @@ workflow {
     UNICYCLER (
         ch_for_assembly
     )
-    UNICYCLER.out.scaffolds.dump(tag: 'unicycler').set { ch_assembly }
+    UNICYCLER.out.assembly.dump(tag: 'unicycler').set { ch_assembly }
 
     //
     // ASSEMBLY QC: QUAST
