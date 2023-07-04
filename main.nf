@@ -10,6 +10,7 @@ def printHelp() {
     log.info """
     Usage:
         nextflow run main.nf
+
     Options:
         --input                      Manifest containing per-sample paths to .fastq.gz files (mandatory)
         --outdir                     Specify output directory [default: ./results] (optional)
