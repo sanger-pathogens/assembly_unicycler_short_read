@@ -1,6 +1,8 @@
 process UNICYCLER {
     tag "$meta.id"
-    label 'process_high'
+    label 'cpu_8'
+    label 'mem_16'
+    label 'time_12'
     publishDir "${params.outdir}/unicycler", mode: 'copy', overwrite: true
 
     container "quay.io/biocontainers/unicycler:0.4.8--py38h8162308_3"
