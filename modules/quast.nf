@@ -1,15 +1,17 @@
 process QUAST {
-    label 'process_medium'
+    label 'cpu_2'
+    label 'mem_4'
+    label 'time_12'
     publishDir "${params.outdir}/quast", mode: 'copy', overwrite: true
 
     container 'quay.io/biocontainers/quast:5.0.2--py37pl526hb5aa323_2'
 
     input:
-    path consensus
+    path(consensus)
 
     output:
-    path "${prefix}"    , emit: results
-    path '*.tsv'        , emit: tsv
+    path("${prefix}")    , emit: results
+    path('*.tsv')        , emit: tsv
 
     script:
     prefix = 'other_files'
