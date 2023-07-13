@@ -9,7 +9,7 @@ from typing import Tuple, Optional, List, Any
 import os
 
 
-BUCKET_URL = "https://test-data-for-assembly-unicycler.cog.sanger.ac.uk"
+BUCKET_URL = "https://test-data-for-assembly-unicycler-short-read.cog.sanger.ac.uk"
 OUTPUT_DIR = Path("./test_data")
 
 
