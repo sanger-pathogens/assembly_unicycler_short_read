@@ -29,7 +29,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = file("test_data/inputs/quast/test_id.scaffolds.fa")
+                input[0] = file("test_data/inputs/quast/test_id.assembly.fa")
                 """
             }
         }
