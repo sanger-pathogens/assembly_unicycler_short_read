@@ -1,0 +1,35 @@
+#%Module1.0#####################################################################
+##
+## Parasites and Microbes Assembly Unicycler Short Read {{version}}
+##
+
+# help setup
+proc ModulesHelp { } {
+  global version modroot
+
+  puts stderr "Custom deployment managed by pathogen informatics: {{path}}"
+  puts stderr "Executables:"
+  puts stderr "\tassembly-unicycler-short-read"
+  puts stderr "Home page: {{repo_url}}"
+}
+
+# Whatis setup
+module-whatis "Custom deployment managed by pathogen informatics: {{path}}"
+module-whatis "Executables:"
+module-whatis "assembly-unicycler-short-read"
+
+# Load prerequisite modules
+module switch nextflow
+module switch ISG/singularity
+
+# Load message
+if { [ module-info mode load ] } {
+    puts stderr "\tModule loaded. For more information run 'module help assembly-unicycler-short-read/{{version}}' or check https://ssg-confluence.internal.sanger.ac.uk/display/PaMI/Unicycler+%28short+reads%29+assembly+pipeline."
+}
+
+# Conflicts
+conflict assembly-unicycler-short-read
+
+# Add wrappers to PATH
+prepend-path PATH "{{path}}/assembly-unicycler-short-read"
+
