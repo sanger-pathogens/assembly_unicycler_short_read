@@ -18,11 +18,13 @@ The pipeline performs assembly of short read data using [Unicycler](https://gith
 ### Running on the farm (Sanger HPC clusters)
 
 1. Load nextflow and singularity modules:
+
    ```bash
    module load nextflow ISG/singularity
    ```
 
 2. Clone the repo:
+
    ```bash
    git clone --recurse-submodules git@gitlab.internal.sanger.ac.uk:sanger-pathogens/pipelines/assembly_unicycler_shortreads.git
    cd assembly_unicycler_shortreads
@@ -32,11 +34,13 @@ The pipeline performs assembly of short read data using [Unicycler](https://gith
    For example input, please see [Generating a manifest](#generating-a-manifest).
 
    Example:
+
    ```bash
    nextflow run . --input ./test_data/inputs/test_manifest.csv --outdir my_output
    ```
 
    It is good practice to submit a dedicated job for the nextflow master process (use the `oversubscribed` queue):
+
    ```bash
    bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 nextflow run . --input ./test_data/inputs/test_manifest.csv --outdir my_output
    ```
@@ -58,7 +62,7 @@ ID,R1,R2
 test_id,./test_data/inputs/test_1.fastq.gz,./test_data/inputs/test_2.fastq.gz
 ```
 
-Where column `ID` can be an arbitrary sample identifier, `R1` is a .fastq.gz file of forward reads, `R2` is the mate .fastq.gz file containing reverse reads. 
+Where column `ID` can be an arbitrary sample identifier, `R1` is a .fastq.gz file of forward reads, `R2` is the mate .fastq.gz file containing reverse reads.
 
 Scripts have been developed to generate manifests appropriate for this pipeline:
 

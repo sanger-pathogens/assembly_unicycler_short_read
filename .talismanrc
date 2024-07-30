@@ -1,0 +1,5 @@
+threshold: medium
+fileignoreconfig:
+- filename: tests/modules/unicycler.nf.test.snap
+  checksum: 359346491eb37d818bcae40873e69ed73510d8b094fead045cfb0314d6342d4b
+version: "1.0"
