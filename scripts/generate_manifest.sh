@@ -17,6 +17,8 @@ EOT
 
 validate_filepath () {
   if [[ -f $1 ]]; then
+    # FIXME path_valid isn't used
+    # shellcheck disable=SC2034
     path_valid=true
   else
     echo "$1 is not a valid filepath!" >&2
@@ -31,12 +33,13 @@ if [[ "$#" == "0" ]]; then
   exit 1
 fi
 
-while getopts "l:m:h" arg;
+while getopts "i:o:h" arg;
 do
   case $arg in
     i) input_file="${OPTARG}";;
     o) manifest_file="${OPTARG}";;
     h) usage; exit 0;;
+    *) echo "Unrecognised option ${OPTARG} will be ignored" 1>&2
   esac
 done
 
