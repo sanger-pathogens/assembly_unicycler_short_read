@@ -39,3 +39,7 @@ pipeline_deploy_to_farm_prod:
 container_scanning:
   rules:
     - when: never
+
+check_scan_results:
+  variables:
+    MEDIUM_LIMIT: 3
