@@ -7,6 +7,10 @@ talisman:
   variables:
     TALISMAN_OPTS: "--scan --ignoreHistory"
 
+.pipeline_deploy_to_farm:
+  variables:
+    FARM_NAME: "assembly-unicycler-short-read"
+
 check_scan_results:
   variables:
     MEDIUM_LIMIT: 3
