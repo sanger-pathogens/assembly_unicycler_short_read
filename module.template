@@ -10,6 +10,8 @@ proc ModulesHelp { } {
   puts stderr "Custom deployment managed by pathogen informatics: {{path}}"
   puts stderr "Executables:"
   puts stderr "\tassembly-unicycler-short-read"
+  puts stderr "\tgenerate_manifest.sh"
+  puts stderr "\tgenerate_manifest_from_lanes.sh"
   puts stderr "Home page: {{repo_url}}"
 }
 
@@ -17,8 +19,8 @@ proc ModulesHelp { } {
 module-whatis "Custom deployment managed by pathogen informatics: {{path}}"
 module-whatis "Executables:"
 module-whatis "assembly-unicycler-short-read"
-module-whatis "scripts/generate_manifest.sh"
-module-whatis "scripts/generate_manifest_from_lanes.sh"
+module-whatis "generate_manifest.sh"
+module-whatis "generate_manifest_from_lanes.sh"
 
 # Load prerequisite modules
 module switch nextflow
@@ -33,5 +35,5 @@ if { [ module-info mode load ] } {
 conflict assembly-unicycler-short-read
 
 # Add wrappers to PATH
-prepend-path PATH "{{path}}/assembly-unicycler-short-read"
+prepend-path PATH "{{path}}/assembly-unicycler-short-read:{{path}}/assembly-unicycler-short-read/scripts"
 
