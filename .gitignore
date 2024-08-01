@@ -6,3 +6,7 @@ results/
 testing/
 testing*
 *.pyc
+.gitlab-ci-local/
+.gitlab-ci-local-env
+.gitlab-ci-local-variables.yml
+talisman_report
