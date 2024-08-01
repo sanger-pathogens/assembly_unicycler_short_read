@@ -17,6 +17,8 @@ proc ModulesHelp { } {
 module-whatis "Custom deployment managed by pathogen informatics: {{path}}"
 module-whatis "Executables:"
 module-whatis "assembly-unicycler-short-read"
+module-whatis "scripts/generate_manifest.sh"
+module-whatis "scripts/generate_manifest_from_lanes.sh"
 
 # Load prerequisite modules
 module switch nextflow
