@@ -34,11 +34,11 @@ if [[ "$#" == "0" ]]; then
     exit 1
 fi
 
-while getopts "l:m:h" arg;
+while getopts "i:o:h" arg;
 do
     case $arg in
-      l) lanes_file="${OPTARG}";;
-      m) manifest_file="${OPTARG}";;
+      i) lanes_file="${OPTARG}";;
+      o) manifest_file="${OPTARG}";;
       h) usage; exit 0;;
       *) echo "Unrecognised option ${OPTARG} will be ignored" 1>&2
     esac
