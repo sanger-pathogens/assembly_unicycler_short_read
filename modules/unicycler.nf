@@ -21,12 +21,13 @@ process UNICYCLER {
     def input_reads = "-1 ${reads[0]} -2 ${reads[1]}"
     def lock_phred = params.lock_phred ? '--spades_args "--phred-offset 33"' : ''
     """
+
     unicycler \\
         --threads $task.cpus \\
         $input_reads \\
         ${lock_phred} \\
         --out ./
-
+    echo "Running: ${lock_phred} --out ./"
     mv assembly.fasta ${prefix}.assembly.fa
     mv assembly.gfa ${prefix}.assembly.gfa
     mv unicycler.log ${prefix}.unicycler.log
