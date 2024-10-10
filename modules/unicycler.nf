@@ -27,7 +27,6 @@ process UNICYCLER {
         $input_reads \\
         ${lock_phred} \\
         --out ./
-    echo "Running: ${lock_phred} --out ./"
     mv assembly.fasta ${prefix}.assembly.fa
     mv assembly.gfa ${prefix}.assembly.gfa
     mv unicycler.log ${prefix}.unicycler.log
