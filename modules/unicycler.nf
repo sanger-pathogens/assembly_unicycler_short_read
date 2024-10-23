@@ -19,10 +19,14 @@ process UNICYCLER {
     def software    = 'unicycler'
     def prefix      = "${meta.id}"
     def input_reads = "-1 ${reads[0]} -2 ${reads[1]}"
+    def mode = params.mode == "conservative" ? "--mode conservative" :
+               params.mode == "normal" ? "--mode normal" :
+               params.mode == "bold" ? "--mode bold" : ""
     """
     unicycler \\
         --threads $task.cpus \\
         $input_reads \\
+        $mode \\
         --out ./
 
     mv assembly.fasta ${prefix}.assembly.fa
