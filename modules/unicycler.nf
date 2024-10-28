@@ -20,8 +20,8 @@ process UNICYCLER {
     def prefix      = "${meta.id}"
     def input_reads = "-1 ${reads[0]} -2 ${reads[1]}"
     def lock_phred = params.lock_phred ? '--spades_options "--phred-offset 33"' : ''
-    def cutoff = params.cutoff ? '--cov-cutoff "auto"' : ''
-    def care = params.care ? '--careful' : ''
+    def cutoff = params.cutoff ? '--spades_options "--cov-cutoff auto"' : ''
+    def care = params.care ? '--sapdes_options "--careful"' : ''
     def mode = params.mode == "conservative" ? "--mode conservative" :
                params.mode == "normal" ? "--mode normal" :
                params.mode == "bold" ? "--mode bold" : ''
