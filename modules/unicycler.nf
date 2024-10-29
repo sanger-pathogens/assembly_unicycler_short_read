@@ -22,8 +22,7 @@ process UNICYCLER {
     def spades_options = ""
         if (params.lock_phred) spades_options += "--phred-offset 33 "
         if (params.cutoff_auto) spades_options += "--cov-cutoff auto "
-        if (params.careful) spades_options += "--careful "
-    def mode = params.mode == "conservative" ? "--mode conservative" :
+     def mode = params.mode == "conservative" ? "--mode conservative" :
                params.mode == "normal" ? "--mode normal" :
                params.mode == "bold" ? "--mode bold" : ''
 
