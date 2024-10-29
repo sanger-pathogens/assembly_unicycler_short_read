@@ -30,7 +30,7 @@ process UNICYCLER {
     unicycler \\
         --threads $task.cpus \\
         $input_reads \\
-        $spades_options
+        $spades_options \\
         --out ./
     mv assembly.fasta ${prefix}.assembly.fa
     mv assembly.gfa ${prefix}.assembly.gfa
