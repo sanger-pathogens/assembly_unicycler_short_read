@@ -19,9 +19,10 @@ process UNICYCLER {
     def software    = 'unicycler'
     def prefix      = "${meta.id}"
     def input_reads = "-1 ${reads[0]} -2 ${reads[1]}"
-    def lock_phred = params.lock_phred ? '--spades_options "--phred-offset 33"' : ''
-    def cutoff = params.cutoff ? '--spades_options "--cov-cutoff auto"' : ''
-    def care = params.care ? '--spades_options "--careful"' : ''
+    def spades_options = []
+        if (params.lock_phred) spades_options << "--phred-offset 33"
+        if (params.cutoff_auto) spades_options << "--cov-cutoff auto"
+        if (params.careful) spades_options << "--careful"
     def mode = params.mode == "conservative" ? "--mode conservative" :
                params.mode == "normal" ? "--mode normal" :
                params.mode == "bold" ? "--mode bold" : ''
@@ -29,10 +30,7 @@ process UNICYCLER {
     unicycler \\
         --threads $task.cpus \\
         $input_reads \\
-        ${lock_phred} \\
-        $mode \\
-        $cutoff \\
-        $care \\
+        $spades_options
         --out ./
     mv assembly.fasta ${prefix}.assembly.fa
     mv assembly.gfa ${prefix}.assembly.gfa
