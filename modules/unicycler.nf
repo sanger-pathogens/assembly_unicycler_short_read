@@ -26,11 +26,14 @@ process UNICYCLER {
     def mode = params.mode == "conservative" ? "--mode conservative" :
                params.mode == "normal" ? "--mode normal" :
                params.mode == "bold" ? "--mode bold" : ''
+               
+    def full_spades_options = "--spades_options \"${spades_options.trim()}\""
+
     """
     unicycler \\
         --threads $task.cpus \\
         $input_reads \\
-        $spades_options \\
+        $full_spades_options \\
         --out ./
     mv assembly.fasta ${prefix}.assembly.fa
     mv assembly.gfa ${prefix}.assembly.gfa
