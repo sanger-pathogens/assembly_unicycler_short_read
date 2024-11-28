@@ -32,7 +32,7 @@ def validate_path_param(
 def validate_parameters() {
     def errors = 0
 
-    errors += validate_path_param("--input", params.input)
+    errors += validate_path_param("--manifest", params.manifest)
 
     if (errors > 0) {
         log.error(String.format("%d errors detected", errors))

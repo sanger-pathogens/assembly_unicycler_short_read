@@ -12,9 +12,7 @@ workflow INPUT_CHECK {
         .ifEmpty {exit 1, log.info "Cannot find path file ${tsvFile}"}
         .splitCsv ( header:true, sep:',' )
         .map { create_fastq_channels(it) }
-        .map { meta, reads -> [ meta, reads ] }
-        .filter{ meta, reads -> reads != 'NA' }
-        .filter{ meta, reads -> reads[0] != 'NA' || reads[1] != 'NA' }  // Single end not supported
+        .filter{ meta, R1, R2 -> R1 != null && R2 != null }
         .set { shortreads }
 
     emit:
@@ -24,22 +22,24 @@ workflow INPUT_CHECK {
 // Function to get list of [ meta, [ fastq_1, fastq_2 ] ]
 def create_fastq_channels(LinkedHashMap row) {
     def meta = [:]
-    meta.id = row.ID
+    meta.ID = row.ID
+
+    Path read_1 = null
+    Path read_2 = null
 
     def array = []
-    // check short reads
-    if ( !(row.R1 == 'NA') ) {
-        if ( !file(row.R1).exists() ) {
-            exit 1, "ERROR: Please check input samplesheet -> Read 1 FastQ file does not exist!\n${row.R1}"
-        }
-        fastq_1 = file(row.R1)
-    } else { fastq_1 = 'NA' }
-    if ( !(row.R2 == 'NA') ) {
-        if ( !file(row.R2).exists() ) {
-            exit 1, "ERROR: Please check input samplesheet -> Read 2 FastQ file does not exist!\n${row.R2}"
-        }
-        fastq_2 = file(row.R2)
-    } else { fastq_2 = 'NA' }
-    array = [ meta, [ fastq_1, fastq_2 ] ]
+    // check R1
+    if ( !file(row.R1).exists() ) {
+        exit 1, "ERROR: Please check input manifest -> Read 1 file does not exist!\n${row.R1}"
+    }
+    read_1 = file(row.R1)
+
+    // check R2
+    if ( !file(row.R2).exists() ) {
+        exit 1, "ERROR: Please check input manifest -> Read 2 file does not exist!\n${row.R2}"
+    }
+    read_2 = file(row.R2)
+
+    array = [ meta, read_1, read_2 ]
     return array
 }

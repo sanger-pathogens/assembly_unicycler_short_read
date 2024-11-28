@@ -1,14 +1,32 @@
+def buildSpadesOptions() {
+    def options = []
+    if (params.lock_phred) options << "--phred-offset 33"
+    if (params.cutoff_auto) options << "--cov-cutoff auto"
+    if (params.spades_options) options << "${params.spades_options}" //if there are any given add them
+    return options ? "--spades_options '${options.join(' ')}'" : "" //return options or nothing if no options given
+}
+
+def getModeOption(mode) {
+    //to prevent big ternary operator have a seperate switchcase for the given mode
+    switch (mode) {
+        case 'conservative': return '--mode conservative'
+        case 'normal': return '--mode normal'
+        case 'bold': return '--mode bold'
+        default: return ''
+    }
+}
+
 process UNICYCLER {
-    tag "$meta.id"
+    tag "${meta.ID}"
     label 'cpu_8'
     label 'mem_16'
     label 'time_12'
     publishDir "${params.outdir}/unicycler", mode: 'copy', overwrite: true
 
-    container "quay.io/biocontainers/unicycler:0.5.1--py310hdf79db3_2"
+    container "quay.io/biocontainers/unicycler:0.5.1--py311h6eedab3_2"
 
     input:
-    tuple val(meta), file(reads)
+    tuple val(meta), path(read_1), path(read_2)
 
     output:
     tuple val(meta), path('*.assembly.fa')   , emit: assembly
@@ -16,27 +34,20 @@ process UNICYCLER {
     tuple val(meta), path('*.log')          , emit: log
 
     script:
-    def software    = 'unicycler'
-    def prefix      = "${meta.id}"
-    def input_reads = "-1 ${reads[0]} -2 ${reads[1]}"
-    def spades_options = ""
-        if (params.lock_phred) spades_options += "--phred-offset 33 "
-        if (params.cutoff_auto) spades_options += "--cov-cutoff auto "
-     def mode = params.mode == "conservative" ? "--mode conservative" :
-               params.mode == "normal" ? "--mode normal" :
-               params.mode == "bold" ? "--mode bold" : ''
-    def full_spades_options = "--spades_options \"${spades_options.trim()}\""
-
+    def spades_options = buildSpadesOptions()
+    def mode = getModeOption(params.mode)
     """
     unicycler \\
-        --threads $task.cpus \\
-        $input_reads \\
-        $full_spades_options \\
-        $mode \\
-        --out ./
-    mv assembly.fasta ${prefix}.assembly.fa
-    mv assembly.gfa ${prefix}.assembly.gfa
-    mv unicycler.log ${prefix}.unicycler.log
+        --threads ${task.cpus} \\
+        -1 ${read_1} -2 ${read_2} \\
+        ${mode} \\
+        --out unicycler \\
+        ${spades_options} \\
+        --kmers 41,45,49,53,57,61,65,69,73,77,81,85,89,93,97,101,105,109,113,117,121,125
+
+    mv unicycler/assembly.fasta ${meta.ID}.assembly.fa
+    mv unicycler/assembly.gfa ${meta.ID}.assembly.gfa
+    mv unicycler/unicycler.log ${meta.ID}.unicycler.log
     """
 }
 

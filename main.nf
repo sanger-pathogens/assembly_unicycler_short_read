@@ -12,7 +12,7 @@ def printHelp() {
         nextflow run main.nf
 
     Options:
-        --input                      Manifest containing per-sample paths to .fastq.gz files (mandatory)
+        --manifest                   Manifest containing per-sample paths to .fastq.gz files (mandatory)
         --outdir                     Specify output directory [default: ./results] (optional)
         --help                       Print this help message (optional)
     """.stripIndent()
@@ -33,13 +33,13 @@ if (params.help) {
 // MODULES
 //
 include { validate_parameters } from './modules/helper_functions'
-include { UNICYCLER } from './modules/unicycler'
-include { QUAST } from './modules/quast'
+include { UNICYCLER           } from './modules/unicycler'
+include { QUAST; SUMMARY      } from './modules/quast'
 
 //
 // SUBWORKFLOWS
 //
-include { INPUT_CHECK } from './subworkflows/input_check'
+include { INPUT_CHECK         } from './subworkflows/input_check'
 
 /*
 ========================================================================================
@@ -56,37 +56,18 @@ validate_parameters()
 */
 
 workflow {
+    //parse manifest and run unicycler
+    ch_input = file(params.manifest)
+    INPUT_CHECK(ch_input)
+    | UNICYCLER 
 
-    //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
-    ch_input = file(params.input)
-    INPUT_CHECK (
-        ch_input
-    )
-    INPUT_CHECK.out.shortreads.dump(tag: 'shortreads')
-        .map{ meta,reads -> tuple(meta,reads) }
-        .dump(tag: 'ch_for_assembly')
-        .set { ch_for_assembly }
+    //run quast on all assembiles
+    QUAST(UNICYCLER.out.assembly)
 
-    //
-    // ASSEMBLY: Unicycler
-    //
-    UNICYCLER (
-        ch_for_assembly
-    )
-    UNICYCLER.out.assembly.dump(tag: 'unicycler').set { ch_assembly }
+    QUAST.out.quast_out
+    | collect
+    | SUMMARY
 
-    //
-    // ASSEMBLY QC: QUAST
-    //
-    ch_assembly
-        .map { meta, fasta -> fasta }
-        .collect()
-        .set { ch_to_quast }
-    QUAST (
-        ch_to_quast
-    )
 }
 
 /*
