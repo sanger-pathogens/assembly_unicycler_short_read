@@ -5,7 +5,7 @@ process UNICYCLER {
     label 'time_12'
     publishDir "${params.outdir}/unicycler", mode: 'copy', overwrite: true
 
-    container "quay.io/biocontainers/unicycler:0.5.1--py310hdf79db3_2"
+    container "quay.io/biocontainers/unicycler:0.5.0-vanillaspades"
 
     input:
     tuple val(meta), file(reads)
