@@ -23,13 +23,13 @@ process UNICYCLER {
     label 'time_12'
     publishDir "${params.outdir}/unicycler", mode: 'copy', overwrite: true
 
-    container "quay.io/biocontainers/unicycler:0.5.1--py311h6eedab3_2"
+    container "quay.io/ssd28/experimental/unicycler-careful:0.1"
 
     input:
     tuple val(meta), path(read_1), path(read_2)
 
     output:
-    tuple val(meta), path('*.assembly.fa')   , emit: assembly
+    tuple val(meta), path('*.assembly.fa')  , emit: assembly
     tuple val(meta), path('*.assembly.gfa') , emit: gfa
     tuple val(meta), path('*.log')          , emit: log
 

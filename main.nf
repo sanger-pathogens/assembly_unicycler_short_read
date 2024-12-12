@@ -32,22 +32,14 @@ if (params.help) {
 //
 // MODULES
 //
-include { validate_parameters } from './modules/helper_functions'
 include { UNICYCLER           } from './modules/unicycler'
 include { QUAST; SUMMARY      } from './modules/quast'
 
 //
 // SUBWORKFLOWS
 //
-include { INPUT_CHECK         } from './subworkflows/input_check'
 
-/*
-========================================================================================
-    VALIDATE INPUTS
-========================================================================================
-*/
-
-validate_parameters()
+include { MIXED_INPUT         } from './assorted-sub-workflows/combined_input/mixed_input.nf'
 
 /*
 ========================================================================================
@@ -56,18 +48,18 @@ validate_parameters()
 */
 
 workflow {
-    //parse manifest and run unicycler
-    ch_input = file(params.manifest)
-    INPUT_CHECK(ch_input)
-    | UNICYCLER 
+    MIXED_INPUT
+    | UNICYCLER
 
+    if (params.keep_overlaps) {
+        
+    }
     //run quast on all assembiles
     QUAST(UNICYCLER.out.assembly)
 
     QUAST.out.quast_out
     | collect
     | SUMMARY
-
 }
 
 /*
