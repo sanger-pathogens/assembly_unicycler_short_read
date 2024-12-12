@@ -51,9 +51,6 @@ workflow {
     MIXED_INPUT
     | UNICYCLER
 
-    if (params.keep_overlaps) {
-        
-    }
     //run quast on all assembiles
     QUAST(UNICYCLER.out.assembly)
 
