@@ -6,21 +6,20 @@
 ========================================================================================
 */
 
+def logo = NextflowTool.logo(workflow, params.monochrome_logs)
+
+log.info logo
+
+NextflowTool.commandLineParams(workflow.commandLine, log, params.monochrome_logs)
+
 def printHelp() {
-    log.info """
-    Usage:
-        nextflow run main.nf
-
-    Options:
-        --manifest                   Manifest containing per-sample paths to .fastq.gz files (mandatory)
-        --outdir                     Specify output directory [default: ./results] (optional)
-        --help                       Print this help message (optional)
-    """.stripIndent()
-}
-
-if (params.help) {
-    printHelp()
-    exit(0)
+    NextflowTool.help_message(
+        "${workflow.ProjectDir}/schema.json",
+        [
+            "${workflow.ProjectDir}/assorted-sub-workflows/combined_input/schema.json"
+        ],
+        params.monochrome_logs, log
+    )
 }
 
 /*
@@ -48,6 +47,11 @@ include { MIXED_INPUT         } from './assorted-sub-workflows/combined_input/mi
 */
 
 workflow {
+    if (params.help) {
+        printHelp()
+        exit(0)
+    }
+
     MIXED_INPUT
     | UNICYCLER
 
