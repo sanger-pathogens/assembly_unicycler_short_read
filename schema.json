@@ -1,27 +1,26 @@
 {
-    "pipeline": "Assembly Unicycler Short Read",
-    "params": {
-        "Aliased options": {
-            "manifest": {
-                "default": "",
-                "help_text": "Alias for --manifest_of_reads (optional)"
-            }
-        },
-        "Output options": {
-            "outdir": {
-                "default": "results",
-                "help_text": "Path to output folder (optional)"
-            }
-        },
-        "Logging options": {
-            "monochrome_logs": {
-                "default": "false",
-                "help_text": "Should logs appear in plain ASCII (optional)"
-            }
-        }
+  "pipeline": "Assembly Unicycler Short Read",
+  "params": {
+    "Aliased options": {
+      "manifest": {
+        "default": "",
+        "help_text": "Alias for --manifest_of_reads (optional)"
+      }
     },
-    "overwrite_param": {
-        "": {
-        }
+    "Output options": {
+      "outdir": {
+        "default": "results",
+        "help_text": "Path to output folder (optional)"
+      }
+    },
+    "Logging options": {
+      "monochrome_logs": {
+        "default": "false",
+        "help_text": "Should logs appear in plain ASCII (optional)"
+      }
     }
+  },
+  "overwrite_param": {
+    "": {}
+  }
 }
