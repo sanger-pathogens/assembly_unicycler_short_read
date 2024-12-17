@@ -16,7 +16,7 @@ def printHelp() {
     NextflowTool.help_message(
         "${workflow.ProjectDir}/schema.json",
         [
-            "${workflow.ProjectDir}/assorted-sub-workflows/combined_input/schema.json"
+            "${workflow.ProjectDir}/assorted-sub-workflows/mixed_input/schema.json"
         ],
         params.monochrome_logs, log
     )
@@ -38,7 +38,7 @@ include { QUAST; SUMMARY      } from './modules/quast'
 // SUBWORKFLOWS
 //
 
-include { MIXED_INPUT         } from './assorted-sub-workflows/combined_input/mixed_input.nf'
+include { MIXED_INPUT         } from './assorted-sub-workflows/mixed_input/mixed_input.nf'
 
 /*
 ========================================================================================
