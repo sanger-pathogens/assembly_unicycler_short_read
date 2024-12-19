@@ -1,0 +1,20 @@
+{
+  "pipeline": "Assembly Unicycler Short Read",
+  "params": {
+    "Output options": {
+      "outdir": {
+        "default": "results",
+        "help_text": "Path to output folder (optional)"
+      }
+    },
+    "Logging options": {
+      "monochrome_logs": {
+        "default": "false",
+        "help_text": "Should logs appear in plain ASCII (optional)"
+      }
+    }
+  },
+  "overwrite_param": {
+    "": {}
+  }
+}

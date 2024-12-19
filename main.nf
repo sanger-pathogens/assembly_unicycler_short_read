@@ -6,21 +6,20 @@
 ========================================================================================
 */
 
+def logo = NextflowTool.logo(workflow, params.monochrome_logs)
+
+log.info logo
+
+NextflowTool.commandLineParams(workflow.commandLine, log, params.monochrome_logs)
+
 def printHelp() {
-    log.info """
-    Usage:
-        nextflow run main.nf
-
-    Options:
-        --input                      Manifest containing per-sample paths to .fastq.gz files (mandatory)
-        --outdir                     Specify output directory [default: ./results] (optional)
-        --help                       Print this help message (optional)
-    """.stripIndent()
-}
-
-if (params.help) {
-    printHelp()
-    exit(0)
+    NextflowTool.help_message(
+        "${workflow.ProjectDir}/schema.json",
+        [
+            "${workflow.ProjectDir}/assorted-sub-workflows/mixed_input/schema.json"
+        ],
+        params.monochrome_logs, log
+    )
 }
 
 /*
@@ -32,22 +31,14 @@ if (params.help) {
 //
 // MODULES
 //
-include { validate_parameters } from './modules/helper_functions'
-include { UNICYCLER } from './modules/unicycler'
-include { QUAST } from './modules/quast'
+include { UNICYCLER           } from './modules/unicycler'
+include { QUAST; SUMMARY      } from './modules/quast'
 
 //
 // SUBWORKFLOWS
 //
-include { INPUT_CHECK } from './subworkflows/input_check'
 
-/*
-========================================================================================
-    VALIDATE INPUTS
-========================================================================================
-*/
-
-validate_parameters()
+include { MIXED_INPUT         } from './assorted-sub-workflows/mixed_input/mixed_input.nf'
 
 /*
 ========================================================================================
@@ -56,37 +47,20 @@ validate_parameters()
 */
 
 workflow {
+    if (params.help) {
+        printHelp()
+        exit(0)
+    }
 
-    //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
-    ch_input = file(params.input)
-    INPUT_CHECK (
-        ch_input
-    )
-    INPUT_CHECK.out.shortreads.dump(tag: 'shortreads')
-        .map{ meta,reads -> tuple(meta,reads) }
-        .dump(tag: 'ch_for_assembly')
-        .set { ch_for_assembly }
+    MIXED_INPUT
+    | UNICYCLER
 
-    //
-    // ASSEMBLY: Unicycler
-    //
-    UNICYCLER (
-        ch_for_assembly
-    )
-    UNICYCLER.out.assembly.dump(tag: 'unicycler').set { ch_assembly }
+    //run quast on all assembiles
+    QUAST(UNICYCLER.out.assembly)
 
-    //
-    // ASSEMBLY QC: QUAST
-    //
-    ch_assembly
-        .map { meta, fasta -> fasta }
-        .collect()
-        .set { ch_to_quast }
-    QUAST (
-        ch_to_quast
-    )
+    QUAST.out.quast_out
+    | collect
+    | SUMMARY
 }
 
 /*

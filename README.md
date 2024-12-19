@@ -36,13 +36,13 @@ The pipeline performs assembly of short read data using [Unicycler](https://gith
    Example:
 
    ```bash
-   nextflow run . --input ./test_data/inputs/test_manifest.csv --outdir my_output
+   nextflow run . --manifest ./test_data/inputs/test_manifest.csv --outdir my_output
    ```
 
    It is good practice to submit a dedicated job for the nextflow master process (use the `oversubscribed` queue):
 
    ```bash
-   bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 nextflow run . --input ./test_data/inputs/test_manifest.csv --outdir my_output
+   bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 nextflow run . --manifest ./test_data/inputs/test_manifest.csv --outdir my_output
    ```
 
    See [usage](#usage) for all available pipeline options.
@@ -55,7 +55,7 @@ The pipeline performs assembly of short read data using [Unicycler](https://gith
 
 ## Generating a manifest
 
-Manifests supplied as an argument to `--input` should be of of the following format:
+Manifests supplied as an argument to `--manifest` should be of of the following format:
 
 ```console
 ID,R1,R2
@@ -78,7 +78,7 @@ Please run `--help` on these scripts for more information on script usage.
 Usage:
     nextflow run main.nf
 Options:
-    --input                      Manifest containing per-sample paths to .fastq.gz files (mandatory)
+    --manifest                      Manifest containing per-sample paths to .fastq.gz files (mandatory)
     --outdir                     Specify output directory [default: ./results] (optional)
     --help                       Print this help message (optional)
 ```
