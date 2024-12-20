@@ -52,6 +52,8 @@ include { MIXED_INPUT         } from './assorted-sub-workflows/mixed_input/mixed
 ========================================================================================
 */
 
+validateParameters()
+
 workflow {
     if (params.help) {
         printHelp()
