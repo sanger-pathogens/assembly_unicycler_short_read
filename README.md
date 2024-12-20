@@ -1,4 +1,4 @@
-# assembly_unicycler_shortreads
+# assembly_unicycler_short_read
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.04.0-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
@@ -7,7 +7,7 @@
 
 ## Introduction
 
-**assembly_unicycler_shortreads** is a bioinformatics best-practice analysis pipeline for simple bacterial assembly and assembly QC. This particular pipeline is designed for **short read data**.
+**assembly_unicycler_short_read** is a bioinformatics best-practice analysis pipeline for simple bacterial assembly and assembly QC. This particular pipeline is designed for **short read data**.
 
 ## Pipeline summary
 
@@ -26,8 +26,8 @@ The pipeline performs assembly of short read data using [Unicycler](https://gith
 2. Clone the repo:
 
    ```bash
-   git clone --recurse-submodules git@gitlab.internal.sanger.ac.uk:sanger-pathogens/pipelines/assembly_unicycler_shortreads.git
-   cd assembly_unicycler_shortreads
+   git clone --recurse-submodules git@gitlab.internal.sanger.ac.uk:sanger-pathogens/pipelines/assembly_unicycler_short_read.git
+   cd assembly_unicycler_short_read
    ```
 
 3. Start the pipeline  
@@ -55,14 +55,7 @@ The pipeline performs assembly of short read data using [Unicycler](https://gith
 
 ## Generating a manifest
 
-Manifests supplied as an argument to `--manifest` should be of of the following format:
-
-```console
-ID,R1,R2
-test_id,./test_data/inputs/test_1.fastq.gz,./test_data/inputs/test_2.fastq.gz
-```
-
-Where column `ID` can be an arbitrary sample identifier, `R1` is a .fastq.gz file of forward reads, `R2` is the mate .fastq.gz file containing reverse reads.
+This pipeline has several input parameters that allow read data to be retrieved locally, from the ENA, and from iRODS. Further detail can be found by using the pipeline `--help` parameter, or [here](./assorted-sub-workflows/README.md).
 
 Scripts have been developed to generate manifests appropriate for this pipeline:
 
@@ -105,7 +98,7 @@ Developer contributions to this pipeline will only be accepted if all pipeline t
 
 ## Credits
 
-assembly_unicycler_shortreads was inspired by the [nf-core/bacass](https://github.com/nf-core/bacass) and contains components derived from that pipeline.
+assembly_unicycler_short_read was inspired by the [nf-core/bacass](https://github.com/nf-core/bacass) and contains components derived from that pipeline.
 
 ## Support
 
@@ -113,7 +106,7 @@ For further information or help, don't hesitate to get in touch via [path-help@s
 
 ## Citations
 
-If you use assembly_unicycler_shortreads for your analysis, please cite the nf-core/bacass pipeline using the following doi: [10.5281/zenodo.2669428](https://doi.org/10.5281/zenodo.2669428)
+If you use assembly_unicycler_short_read for your analysis, please cite the nf-core/bacass pipeline using the following doi: [10.5281/zenodo.2669428](https://doi.org/10.5281/zenodo.2669428)
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
