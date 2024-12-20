@@ -22,6 +22,12 @@ def printHelp() {
     )
 }
 
+def validateParameters() {
+    if (params.isolate) and (params.careful){
+        log.error """The parameters `--isolate` and `--careful` are exclusive and cannot be specified together. Please use `--isolate false --careful` to turn off default `isolate` and enable `careful`."""
+    }
+}
+
 /*
 ========================================================================================
     IMPORT MODULES/SUBWORKFLOWS
