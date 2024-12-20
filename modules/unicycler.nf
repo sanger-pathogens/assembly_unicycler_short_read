@@ -1,19 +1,11 @@
 def buildSpadesOptions() {
     def options = []
+    if (params.isolate) options << "--isolate "
+    if (params.careful) options << "--careful "
     if (params.lock_phred) options << "--phred-offset 33"
     if (params.cutoff_auto) options << "--cov-cutoff auto"
     if (params.spades_options) options << "${params.spades_options}" //if there are any given add them
     return options ? "--spades_options '${options.join(' ')}'" : "" //return options or nothing if no options given
-}
-
-def getModeOption(mode) {
-    //to prevent big ternary operator have a seperate switchcase for the given mode
-    switch (mode) {
-        case 'conservative': return '--mode conservative'
-        case 'normal': return '--mode normal'
-        case 'bold': return '--mode bold'
-        default: return ''
-    }
 }
 
 process UNICYCLER {
@@ -23,7 +15,7 @@ process UNICYCLER {
     label 'time_12'
     publishDir "${params.outdir}/unicycler", mode: 'copy', overwrite: true
 
-    container "quay.io/ssd28/experimental/unicycler-careful:0.1"
+    container "quay.io/sangerpathogens/unicycler:0.5.1-vanillaspades"
 
     input:
     tuple val(meta), path(read_1), path(read_2)
@@ -35,12 +27,12 @@ process UNICYCLER {
 
     script:
     def spades_options = buildSpadesOptions()
-    def mode = getModeOption(params.mode)
+    def mode = params.mode == "" ? "normal" : params.mode
     """
     unicycler \\
         --threads ${task.cpus} \\
         -1 ${read_1} -2 ${read_2} \\
-        ${mode} \\
+        --mode ${mode} \\
         --out unicycler \\
         ${spades_options}
 
