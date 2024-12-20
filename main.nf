@@ -23,7 +23,7 @@ def printHelp() {
 }
 
 def validateParameters() {
-    if (params.isolate) && (params.careful){
+    if (params.isolate && params.careful){
         throw new Exception("""The parameters `--isolate` and `--careful` are exclusive and cannot be specified together. You may need to use `--isolate false --careful` to turn off the default `isolate` value and enable `careful`.""")
     }
 }
