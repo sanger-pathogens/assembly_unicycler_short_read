@@ -70,7 +70,7 @@ do
       lane_id=$(echo $line | awk -F "/" '{ print $NF }' | sed 's|_[12].fastq.gz||g')
       read2=$(echo $line)
       read1=$(cat $fastq_paths | grep ${lane_id}_ | grep -v ${read2})
-      echo $lane_id,$read1,$read2 >> manifest.csv
+      echo $lane_id,$read1,$read2 >> "${manifest_file}"
       count=0
     fi
 done < $fastq_paths
