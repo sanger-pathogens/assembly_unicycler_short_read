@@ -13,7 +13,7 @@ process UNICYCLER {
     label 'cpu_8'
     label 'mem_16'
     label 'time_12'
-    publishDir "${params.outdir}/unicycler", mode: 'copy', overwrite: true
+    publishDir "${params.outdir}/${meta.ID}/unicycler", mode: 'copy', overwrite: true
 
     container "quay.io/sangerpathogens/unicycler:0.5.1-vanillaspades"
 
