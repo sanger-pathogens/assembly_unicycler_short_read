@@ -7,8 +7,8 @@
         "help_text": "Path to output folder (optional)"
       },
       "cleanup_intermediate_files": {
-          "default": "true",
-          "help_text": "whether to delete intermediate files from the multiple iterations of SPAdes assembly as generated within Unicycler process"
+        "default": "true",
+        "help_text": "whether to delete intermediate files from the multiple iterations of SPAdes assembly as generated within Unicycler process"
       }
     },
     "Unicycler pipeline options": {
