@@ -19,20 +19,20 @@
     },
     "SPAdes assembler options": {
       "cutoff_auto": {
-          "default": "false",
-          "help_text": "sets SPAdes option --cutoff to 'auto'"
+        "default": "false",
+        "help_text": "sets SPAdes option --cutoff to 'auto'"
       },
       "lock_phred": {
-          "default": "false",
-          "help_text": "sets SPAdes option --phred-offset to 33 (useful when reads quality information is missing e.g. when using SRAlite fastq reads)"
+        "default": "false",
+        "help_text": "sets SPAdes option --phred-offset to 33 (useful when reads quality information is missing e.g. when using SRAlite fastq reads)"
       },
       "careful": {
-          "default": "false",
-          "help_text": "enables SPAdes option --careful (sets careful running mode); this parameter is exclusive of --isolate)"
+        "default": "false",
+        "help_text": "enables SPAdes option --careful (sets careful running mode); this parameter is exclusive of --isolate)"
       },
       "isolate": {
-          "default": "false",
-          "help_text": "enables SPAdes option --isolate (sets isolate running mode); this parameter is exclusive of --careful)"
+        "default": "false",
+        "help_text": "enables SPAdes option --isolate (sets isolate running mode); this parameter is exclusive of --careful)"
       }
     },
     "Logging options": {
