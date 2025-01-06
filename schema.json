@@ -5,7 +5,37 @@
       "outdir": {
         "default": "results",
         "help_text": "Path to output folder (optional)"
+      },
+      "cleanup_intermediate_files": {
+        "outdir": {
+          "default": "true",
+          "help_text": "whether to delete intermediate files from the multiple iterations of SPAdes assembly as generated within Unicycler process"
+        }
       }
+    },
+    "Unicycler pipeline options": {
+      "mode": {
+        "default": "normal",
+        "help_text": "defines value for Unicycler option --mode and thus the aggressivity of the assembly scaffold resolution task; valid values are: 'conservative', 'normal' or 'bold'"
+      }
+    },
+    "SPAdes assembly options": {
+      "cutoff_auto": {
+          "default": "false",
+          "help_text": "sets SPAdes option --cutoff to 'auto'"
+        },
+        "lock_phred": {
+            "default": "false",
+            "help_text": "sets SPAdes option --phred-offset to 33 (useful when reads quality information is missing e.g. when using SRAlite fastq reads)"
+          },
+        "careful": {
+            "default": "false",
+            "help_text": "enables SPAdes option --careful (sets careful runnig mode); this parameter is exclusive of --isolate)"
+          },
+        "isolate": {
+            "default": "false",
+            "help_text": "enables SPAdes option --isolate (sets isolate runnig mode); this parameter is exclusive of --careful)"
+          }
     },
     "Logging options": {
       "monochrome_logs": {
