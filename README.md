@@ -70,10 +70,19 @@ Please run `--help` on these scripts for more information on script usage.
 ```console
 Usage:
     nextflow run main.nf
-Options:
-    --manifest                      Manifest containing per-sample paths to .fastq.gz files (mandatory)
-    --outdir                     Specify output directory [default: ./results] (optional)
-    --help                       Print this help message (optional)
+Basic options:
+   --manifest                   Manifest containing per-sample paths to .fastq.gz files (mandatory)
+   --outdir                     Specify output directory [default: ./results] (optional)
+   --help                       Print the help message (optional)
+Extended options:
+   --cleanup_intermediate_files Whether to delete intermediate files from the multiple iterations of SPAdes assembly as generated within Unicycler process [default: true] (optional)
+   --mode                        Defines value for Unicycler option --mode and thus the aggressivity of the assembly scaffold resolution task; valid values are: 'conservative', 'normal' or 'bold'  [default: normal] (optional)
+   --cutoff_auto                 Sets SPAdes option --cutoff to 'auto' [default: false] (optional)
+   --lock_phred                  Sets SPAdes option --phred-offset to 33 (useful when reads quality information is missing e.g. when using SRAlite fastq reads) [default: false] (optional)
+   --careful                     enables SPAdes option --careful (sets careful runnig mode); this parameter is exclusive of --isolate) [default: false] (optional)
+   --isolate                     enables SPAdes option --isolate (sets isolate runnig mode); this parameter is exclusive of --careful) [default: false] (optional)
+   --monochrome_logs Should logs appear in plain ASCII [default: false] (optional)
+
 ```
 
 ## Testing
@@ -98,19 +107,19 @@ Developer contributions to this pipeline will only be accepted if all pipeline t
 
 ## Credits
 
-assembly_unicycler_short_read was inspired by the [nf-core/bacass](https://github.com/nf-core/bacass) and contains components derived from that pipeline.
+assembly_unicycler_short_read was inspired by the [nf-co.re/bacass](https://github.com/nf-core/bacass) and contains components derived from that pipeline.
 
 ## Support
 
-For further information or help, don't hesitate to get in touch via [path-help@sanger.ac.uk](mailto:path-help@sanger.ac.uk).
+For further information or help, don't hesitate to get in touch via [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk).
 
 ## Citations
 
-If you use assembly_unicycler_short_read for your analysis, please cite the nf-core/bacass pipeline using the following doi: [10.5281/zenodo.2669428](https://doi.org/10.5281/zenodo.2669428)
+If you use `assembly_unicycler_short_read` for your analysis, please cite the `nf-co.re/bacass` pipeline using the following doi: [10.5281/zenodo.2669428](https://doi.org/10.5281/zenodo.2669428)
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
-You can cite the `nf-core` publication as follows:
+You can cite the `nf-co.re` publication as follows:
 
 > **The nf-core framework for community-curated bioinformatics pipelines.**
 >
