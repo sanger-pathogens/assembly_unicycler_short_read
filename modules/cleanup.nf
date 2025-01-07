@@ -9,8 +9,7 @@ process CLEANUP_SPADES_OUTPUT {
     script:
         """
         # Remove intermediary spades assembly folders
-        unicycler_work_dir=\$(cat $workdir)
-        cd \$unicycler_work_dir
+        cd $workdir/
         rm -rf unicycler/spades_assembly
         """
 }
