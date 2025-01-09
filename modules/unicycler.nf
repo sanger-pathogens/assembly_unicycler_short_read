@@ -24,12 +24,14 @@ process UNICYCLER {
     tuple val(meta), path('*.assembly.fa')  , emit: assembly
     tuple val(meta), path('*.assembly.gfa') , emit: gfa
     tuple val(meta), path('*.log')          , emit: log
-    tuple val(meta), val("${task.workDir}") , emit: workdir
+    tuple val(meta), path("${workdir}")     , emit: workdir
 
     script:
     def spades_options = buildSpadesOptions()
     def mode = params.mode == "" ? "normal" : params.mode
+    def workdir="workdir.txt"
     """
+    pwd > "${workdir}"
     unicycler \\
         --threads ${task.cpus} \\
         -1 ${read_1} -2 ${read_2} \\

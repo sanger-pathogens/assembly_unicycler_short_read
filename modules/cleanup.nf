@@ -1,5 +1,9 @@
 process CLEANUP_SPADES_OUTPUT {
-    /**
+    tag "${meta.ID}"
+    label 'cpu_1'
+    label 'mem_1'
+    label 'time_30m'
+/**
     * Cleanup unused output
     */
 
@@ -9,7 +13,8 @@ process CLEANUP_SPADES_OUTPUT {
     script:
         """
         # Remove intermediary spades assembly folders
-        cd $workdir/
+        unicycler_workdir=\$(cat ${workdir})
+        cd \$unicycler_workdir
         rm -rf unicycler/spades_assembly
         """
 }
