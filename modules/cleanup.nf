@@ -3,9 +3,6 @@ process CLEANUP_SPADES_OUTPUT {
     label 'cpu_1'
     label 'mem_1'
     label 'time_30m'
-/**
-    * Cleanup unused output
-    */
 
     input:
          tuple val(meta), path(workdir)
