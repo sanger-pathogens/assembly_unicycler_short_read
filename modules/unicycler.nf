@@ -13,7 +13,7 @@ process UNICYCLER {
     label 'cpu_8'
     label 'mem_16'
     label 'time_12'
-    maxForks = ${params.unicycler_max_jobs}
+    maxForks params.unicycler_max_jobs
     publishDir "${params.outdir}/${meta.ID}/unicycler", mode: 'copy', overwrite: true
 
     container "quay.io/sangerpathogens/unicycler:0.5.1-vanillaspades"
