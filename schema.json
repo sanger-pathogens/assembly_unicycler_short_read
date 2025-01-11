@@ -11,6 +11,12 @@
         "help_text": "whether to delete intermediate files from the multiple iterations of SPAdes assembly as generated within Unicycler process"
       }
     },
+    "Processing options": {
+      "unicycler_max_jobs": {
+        "default": 100,
+        "help_text": "maximum number of UNICYCLER processes to be run at a given time. Upper limit allows to avoid the quick inflation of file count on filesystem due to generation of many (~15k) intermediate assembly files by SPAdes, which will only be cleaned up by a later process."
+      }
+    },
     "Unicycler pipeline options": {
       "mode": {
         "default": "normal",

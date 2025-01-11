@@ -79,8 +79,9 @@ Extended options:
    --mode                        Defines value for Unicycler option --mode and thus the aggressivity of the assembly scaffold resolution task; valid values are: 'conservative', 'normal' or 'bold'  [default: normal] (optional)
    --cutoff_auto                 Sets SPAdes option --cutoff to 'auto' [default: false] (optional)
    --lock_phred                  Sets SPAdes option --phred-offset to 33 (useful when reads quality information is missing e.g. when using SRAlite fastq reads) [default: false] (optional)
-   --careful                     enables SPAdes option --careful (sets careful runnig mode); this parameter is exclusive of --isolate) [default: false] (optional)
-   --isolate                     enables SPAdes option --isolate (sets isolate runnig mode); this parameter is exclusive of --careful) [default: false] (optional)
+   --careful                     enables SPAdes option --careful (sets careful runnig mode; this parameter is exclusive of --isolate) [default: false] (optional)
+   --isolate                     enables SPAdes option --isolate (sets isolate runnig mode; this parameter is exclusive of --careful) [default: false] (optional)
+   --unicycler_max_jobs          maximum number of UNICYCLER processes to be run at a given time. Upper limit allows to avoid the quick inflation of file count on filesystem due to generation of many (~15k) intermediate assembly files by SPAdes, which will only be cleaned up by a later process. [default: 100] (optional)
    --monochrome_logs Should logs appear in plain ASCII [default: false] (optional)
 
 ```
