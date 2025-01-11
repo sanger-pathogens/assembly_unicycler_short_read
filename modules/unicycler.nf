@@ -30,7 +30,7 @@ process UNICYCLER {
     script:
     def spades_options = buildSpadesOptions()
     def mode = params.mode == "" ? "normal" : params.mode
-    def workdir = "workdir.txt"
+    workdir = "workdir.txt"
     """
     pwd > "${workdir}"
     unicycler \\
