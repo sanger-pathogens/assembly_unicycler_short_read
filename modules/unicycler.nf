@@ -39,7 +39,13 @@ process UNICYCLER {
         --mode ${mode} \\
         --out unicycler \\
         ${spades_options}
-
+    status=\${?}
+    if [ "${params.cleanup_intermediate_files}" == 'true' ] ; then
+       rm -rf unicycler/spades_assembly
+    fi
+    if [ \${status} -gt 0 ] ; then
+      exit \${status}
+    fi
     mv unicycler/assembly.fasta ${meta.ID}.assembly.fa
     mv unicycler/assembly.gfa ${meta.ID}.assembly.gfa
     mv unicycler/unicycler.log ${meta.ID}.unicycler.log
