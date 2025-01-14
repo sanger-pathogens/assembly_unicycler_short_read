@@ -39,7 +39,6 @@ def validateParameters() {
 //
 include { UNICYCLER              } from './modules/unicycler'
 include { QUAST; SUMMARY         } from './modules/quast'
-include { CLEANUP_SPADES_OUTPUT  } from './modules/cleanup'
 
 //
 // SUBWORKFLOWS
@@ -70,10 +69,6 @@ workflow {
     QUAST.out.quast_out
     | collect
     | SUMMARY
-
-    if (params.cleanup_intermediate_files) {
-        CLEANUP_SPADES_OUTPUT(UNICYCLER.out.workdir)
-    }
 }
 
 /*
