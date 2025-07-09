@@ -5,7 +5,7 @@ def buildSpadesOptions() {
     if (params.lock_phred) options << "--phred-offset 33"
     if (params.cutoff_auto) options << "--cov-cutoff auto"
     if (params.spades_options) options << "${params.spades_options}" //if there are any given add them
-    return options ? "--spades_options '${options.join(' ')}'" : "" //return options or nothing if no options given
+    return options ? "--spades_options '${options.join(' ')}' -m ${task.memory}" : "" //return options or nothing if no options given
 }
 
 process UNICYCLER {
