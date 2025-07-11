@@ -68,20 +68,20 @@ Please run `--help` on these scripts for more information on script usage.
 ## Usage
 
 ```console
- The following parameters were provided on the command line: 
-      
+ The following parameters were provided on the command line:
+
       - help: true
-      
- Sequencing reads input parameters 
-      
+
+ Sequencing reads input parameters
+
 There are two ways of providing input reads, which can be combined
       1) through direct input of compressed fastq sequence reads files. This kind of input is passed by specifying the paths to the
       read files via a manifest listing the pair of read files pertaing to a sample, one per row.
-      
+
       --manifest_of_reads
             default: false
             Manifest containing per-sample paths to .fastq.gz files (optional)
-      
+
       2) through specification of data to be downloaded from iRODS.
       The selected set of data files is defined by a combination of parameters: studyid, runid, laneid, plexid, target and type (these refer to specifics of the sequencing experiment and data to be retrieved).
       Each parameter restricts the set of data files that match and will be downloaded; when omitted, samples for all possible values of that parameter are retrieved.
@@ -89,7 +89,7 @@ There are two ways of providing input reads, which can be combined
       if these are specified without a studyid or runid, the request will be ignored (no iRODS data or metadata download) with a warning
       - this condition aims to avoid indiscriminate download of thousands of files across all possible runs.
       These parameters can be specified through the following command line options: --studyid, --runid, --laneid, --plexid, --target and --type.
-      
+
       --studyid
             default: -1
             Sequencing Study ID
@@ -108,9 +108,9 @@ There are two ways of providing input reads, which can be combined
       --type
             default: cram
             File type
-      
+
 Alternatively, the user can provide a CSV-format manifest listing a batch of such combinations.
-      
+
       --manifest_of_lanes
             default: false
             Path to a manifest of search terms as specified above.
@@ -131,56 +131,56 @@ Alternatively, the user can provide a CSV-format manifest listing a batch of suc
             default: false
             Path to a manifest/file of ENA accessions (run, sample or study). Please also set the --accession_type to the appropriate accession type.
 -----------------------------------------------------------------
- Aliased options 
+ Aliased options
       --manifest
-            default: 
+            default:
             Alias for --manifest_of_reads (optional)
 -----------------------------------------------------------------
- Output options 
+ Output options
       --outdir
             default: results
             Path to output folder (optional)
-      
+
       --cleanup_intermediate_files
             default: true
             whether to delete intermediate files from the multiple iterations of SPAdes assembly as generated within Unicycler process
-      
+
 -----------------------------------------------------------------
- Processing options 
+ Processing options
       --unicycler_max_jobs
             default: 100
             maximum number of UNICYCLER processes to be run at a given time. Upper limit allows to avoid the quick inflation of file count on filesystem due to generation of many (~15k) intermediate assembly files by SPAdes, which will only be cleaned up by a later process.
-      
+
 -----------------------------------------------------------------
- Unicycler pipeline options 
+ Unicycler pipeline options
       --mode
             default: normal
             defines value for Unicycler option --mode and thus the aggressivity of the assembly scaffold resolution task; valid values are: 'conservative', 'normal' or 'bold'
-      
+
 -----------------------------------------------------------------
- SPAdes assembler options 
+ SPAdes assembler options
       --cutoff_auto
             default: false
             sets SPAdes option --cutoff to 'auto'
-      
+
       --lock_phred
             default: false
             sets SPAdes option --phred-offset to 33 (useful when reads quality information is missing e.g. when using SRAlite fastq reads)
-      
+
       --careful
             default: false
             enables SPAdes option --careful (sets careful running mode); this parameter is exclusive of --isolate)
-      
+
       --isolate
             default: false
             enables SPAdes option --isolate (sets isolate running mode); this parameter is exclusive of --careful)
-      
+
 -----------------------------------------------------------------
- Logging options 
+ Logging options
       --monochrome_logs
             default: false
             Should logs appear in plain ASCII (optional)
-      
+
 -----------------------------------------------------------------
 ```
 
