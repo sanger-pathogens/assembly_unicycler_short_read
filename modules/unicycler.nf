@@ -1,11 +1,21 @@
 def buildSpadesOptions() {
     def options = []
-    if (params.isolate) options << "--isolate "
-    if (params.careful) options << "--careful "
-    if (params.lock_phred) options << "--phred-offset 33"
-    if (params.cutoff_auto) options << "--cov-cutoff auto"
-    if (params.spades_options) options << "${params.spades_options}" //if there are any given add them
-    return options ? "--spades_options '${options.join(' ')}'" : "" //return options or nothing if no options given
+    if (params.isolate) {
+        options << "--isolate "
+    }
+    if (params.careful) {
+        options << "--careful "
+    }
+    if (params.lock_phred) {
+        options << "--phred-offset 33"
+    }
+    if (params.cutoff_auto) {
+        options << "--cov-cutoff auto"
+    }
+    if (params.spades_options) {
+        options << "${params.spades_options}" //if there are any given add them
+    }
+    return options
 }
 
 process UNICYCLER {
@@ -28,7 +38,7 @@ process UNICYCLER {
     tuple val(meta), path("${workdir}")     , emit: workdir
 
     script:
-    def spades_options = buildSpadesOptions()
+    def spades_options = "--spades_options '${buildSpadesOptions().join(' ')} -m ${task.memory.toMega()}'"
     def mode = params.mode == "" ? "normal" : params.mode
     workdir = "workdir.txt"
     """
