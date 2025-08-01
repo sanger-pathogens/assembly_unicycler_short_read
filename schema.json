@@ -38,7 +38,7 @@
       },
       "isolate": {
         "default": "true",
-        "help_text": "enables SPAdes option --isolate (sets isolate running mode); this parameter is exclusive of --careful); theis is the native built-in behaviour of Unicycler as a standalone tool"
+        "help_text": "enables SPAdes option --isolate (sets isolate running mode); this parameter is exclusive of --careful); this is the native built-in behaviour of Unicycler as a standalone tool"
       }
     },
     "Logging options": {
