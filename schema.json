@@ -34,11 +34,11 @@
       },
       "careful": {
         "default": "false",
-        "help_text": "enables SPAdes option --careful (sets careful running mode); this parameter is exclusive of --isolate)"
+        "help_text": "enables SPAdes option --careful (sets careful running mode; this parameter is exclusive of --isolate)"
       },
       "isolate": {
-        "default": "false",
-        "help_text": "enables SPAdes option --isolate (sets isolate running mode); this parameter is exclusive of --careful)"
+        "default": "true",
+        "help_text": "enables SPAdes option --isolate (sets isolate running mode; this parameter is exclusive of --careful). This is the native built-in behaviour of Unicycler as a standalone tool"
       }
     },
     "Logging options": {
