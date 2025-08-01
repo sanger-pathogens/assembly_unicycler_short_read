@@ -169,11 +169,11 @@ Alternatively, the user can provide a CSV-format manifest listing a batch of suc
 
       --careful
             default: false
-            enables SPAdes option --careful (sets careful running mode); this parameter is exclusive of --isolate)
+            enables SPAdes option --careful (sets careful running mode; this parameter is exclusive of --isolate)
 
       --isolate
-            default: false
-            enables SPAdes option --isolate (sets isolate running mode); this parameter is exclusive of --careful)
+            default: true
+            enables SPAdes option --isolate (sets isolate running mode; this parameter is exclusive of --careful). This is the native built-in behaviour of Unicycler as a standalone tool
 
 -----------------------------------------------------------------
  Logging options
