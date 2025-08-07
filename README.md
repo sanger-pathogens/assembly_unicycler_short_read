@@ -149,7 +149,9 @@ Alternatively, the user can provide a CSV-format manifest listing a batch of suc
  Processing options
       --unicycler_max_jobs
             default: 100
-            maximum number of UNICYCLER processes to be run at a given time. Upper limit allows to avoid the quick inflation of file count on filesystem due to generation of many (~15k) intermediate assembly files by SPAdes, which will only be cleaned up by a later process.
+            maximum number of UNICYCLER processes to be run at a given time (within this pipeline run). Upper limit allows to avoid the
+            quick inflation of file count on filesystem due to generation of many (~15k) intermediate assembly files by SPAdes, which will
+            only be cleaned up by a later process (see `isolate` and `careful` options)
 
 -----------------------------------------------------------------
  Unicycler pipeline options
@@ -169,11 +171,24 @@ Alternatively, the user can provide a CSV-format manifest listing a batch of suc
 
       --careful
             default: false
-            enables SPAdes option --careful (sets careful running mode; this parameter is exclusive of --isolate)
+            enables SPAdes option --careful (sets careful running mode; this parameter is exclusive of --isolate).
+            WARNING: Please use this with caution; this option is only recommended for SMALL genomes e.g. viral genomes.
+            Setting `careful = true` enables advanced SPAdes polishing/error correction; when applied to bacterial genomes,
+            this may result in producing MILLIONS of intermediate files during the UNICYCLER process, which is likely to
+            saturate filesystem file count quotas or worse threaten the filesystem integrity.
+            It is recommended to use this in combination with `cleanup_intermediate_files = true` and `unicycler_max_jobs` set to a minimal value e.g. 1.
+
 
       --isolate
             default: true
-            enables SPAdes option --isolate (sets isolate running mode; this parameter is exclusive of --careful). This is the native built-in behaviour of Unicycler as a standalone tool
+            enables SPAdes option --isolate (sets isolate running mode; this parameter is exclusive of --careful).
+            This is the native built-in behaviour of Unicycler as a standalone tool.
+            WARNING: Please use this with caution.
+            Setting `isolate = false` enables basic SPAdes polishing/error correction; when applied to bacterial genomes,
+            this may result in producing thousands of intermediate files during the UNICYCLER process, which, when done at scale,
+            may saturate filesystem file count quotas or worse threaten the filesystem integrity.
+            It is recommended to use this in combination with `cleanup_intermediate_files = true` and unicycler_max_jobs set to a low value e.g. 5.
+
 
 -----------------------------------------------------------------
  Logging options
