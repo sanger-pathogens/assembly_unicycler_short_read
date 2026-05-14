@@ -44,7 +44,11 @@ include { QUAST; SUMMARY         } from './modules/quast'
 // SUBWORKFLOWS
 //
 
-include { MIXED_INPUT         } from './assorted-sub-workflows/mixed_input/mixed_input.nf'
+include { MIXED_INPUT    } from './assorted-sub-workflows/mixed_input/mixed_input.nf'
+include { QC             } from './assorted-sub-workflows/qc/qc.nf'
+include { PREPROCESSING  } from './assorted-sub-workflows/preprocessing/preprocessing.nf'
+
+
 
 /*
 ========================================================================================
@@ -61,6 +65,15 @@ workflow {
     }
 
     MIXED_INPUT
+    | PREPROCESSING
+
+    QC(PREPROCESSING.out.preprocessed_reads_ch)
+
+    PREPROCESSING.out.preprocessed_reads_ch
+    | join(PREPROCESSING.out.unpaired_reads_compressed_ch, remainder: true)
+    | map { meta, read_1, read_2, unpaired ->
+        tuple(meta, read_1, read_2, unpaired ?: [])
+    }
     | UNICYCLER
 
     //run quast on all assembiles

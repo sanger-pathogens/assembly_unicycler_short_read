@@ -29,7 +29,7 @@ process UNICYCLER {
     container "quay.io/sangerpathogens/unicycler:0.5.1-vanillaspades"
 
     input:
-    tuple val(meta), path(read_1), path(read_2)
+    tuple val(meta), path(read_1), path(read_2), path(unpaired)
 
     output:
     tuple val(meta), path('*.assembly.fa')  , emit: assembly
@@ -40,15 +40,18 @@ process UNICYCLER {
     script:
     def spades_options = "--spades_options '${buildSpadesOptions().join(' ')} -m ${task.memory.toMega()}'"
     def mode = params.mode == "" ? "normal" : params.mode
+    def unpaired_arg   = unpaired ? "-s ${unpaired}" : ""
     workdir = "workdir.txt"
     """
     pwd > "${workdir}"
     unicycler \\
         --threads ${task.cpus} \\
         -1 ${read_1} -2 ${read_2} \\
+        ${unpaired_arg} \\
         --mode ${mode} \\
         --out unicycler \\
         ${spades_options}
+
     status=\${?}
     if [ "${params.cleanup_intermediate_files}" == 'true' ] ; then
        rm -rf unicycler/spades_assembly
