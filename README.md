@@ -3,240 +3,178 @@
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.04.0-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![nf-test](https://img.shields.io/badge/tested_with-nf--test-337ab7.svg)](https://github.com/askimed/nf-test)
 
-## Introduction
+[[_TOC_]]
 
-**assembly_unicycler_short_read** is a bioinformatics best-practice analysis pipeline for simple bacterial assembly and assembly QC. This particular pipeline is designed for **short read data**.
+## Pipeline overview
 
-## Pipeline summary
+**assembly_unicycler_short_read** is a Nextflow DSL2 pipeline for assembling bacterial genomes from short-read (paired-end Illumina) sequencing data. It uses [Unicycler](https://github.com/rrwick/Unicycler) for de novo assembly and [QUAST](https://quast.sourceforge.net/) for assembly quality assessment.
 
-The pipeline performs assembly of short read data using [Unicycler](https://github.com/rrwick/Unicycler). QC statistics are provided using [QUAST](http://bioinf.spbau.ru/quast).
+The pipeline performs the following steps:
 
-## Getting started
+1. **Assembly** — Unicycler assembles paired short reads into contigs using SPAdes internally.
+2. **Quality assessment** — QUAST evaluates assembly statistics (N50, contig count, total length) and produces a cross-sample summary.
 
-### Running on the farm (Sanger HPC clusters)
+## Usage
 
-1. Load nextflow and singularity modules:
+### Quickstart
 
-   ```bash
-   module load nextflow ISG/singularity
-   ```
+#### From source code
 
-2. Clone the repo:
+1. Clone this repository (including submodules):
 
    ```bash
-   git clone --recurse-submodules git@gitlab.internal.sanger.ac.uk:sanger-pathogens/pipelines/assembly_unicycler_short_read.git
+   git clone --recurse-submodules https://gitlab.internal.sanger.ac.uk/sanger-pathogens/pipelines/assembly_unicycler_short_read.git
    cd assembly_unicycler_short_read
    ```
 
-3. Start the pipeline  
-   For example input, please see [Generating a manifest](#generating-a-manifest).
-
-   Example:
+2. To run with `docker`, use the `-profile docker` option:
 
    ```bash
-   nextflow run . --manifest ./test_data/inputs/test_manifest.csv --outdir my_output
+   nextflow run main.nf \
+       -profile docker \
+       --manifest manifest.csv \
+       --outdir my_output
    ```
 
-   It is good practice to submit a dedicated job for the nextflow master process (use the `oversubscribed` queue):
+   Other profiles are also supported (`singularity`).  
+   :warning: If no profile is specified the pipeline will run with the Sanger HPC-specific configuration.
 
-   ```bash
-   bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 nextflow run . --manifest ./test_data/inputs/test_manifest.csv --outdir my_output
-   ```
-
-   See [usage](#usage) for all available pipeline options.
-
-4. Once your run has finished, check output in the `outdir` and clean up any intermediate files. To do this (assuming no other pipelines are running from the current working directory) run:
+3. Once the run has finished, clean up intermediate files:
 
    ```bash
    rm -rf work .nextflow*
    ```
 
-## Generating a manifest
+#### Using on the Sanger farm
 
-This pipeline has several input parameters that allow read data to be retrieved locally, from the ENA, and from iRODS. Further detail can be found by using the pipeline `--help` parameter, or [here](./assorted-sub-workflows/README.md).
+Load Nextflow and Singularity:
 
-Scripts have been developed to generate manifests appropriate for this pipeline:
-
-- To generate a manifest from a file of lane identifiers visible to `pf`, use [this script](./scripts/generate_manifest_from_lanes.sh).
-
-- To generate a manifest from a file of custom .fastq.gz paths, use [this script](./scripts/generate_manifest.sh).
-
-Please run `--help` on these scripts for more information on script usage.
-
-## Usage
-
-```console
- The following parameters were provided on the command line:
-
-      - help: true
-
- Sequencing reads input parameters
-
-There are two ways of providing input reads, which can be combined
-      1) through direct input of compressed fastq sequence reads files. This kind of input is passed by specifying the paths to the
-      read files via a manifest listing the pair of read files pertaing to a sample, one per row.
-
-      --manifest_of_reads
-            default: false
-            Manifest containing per-sample paths to .fastq.gz files (optional)
-
-      2) through specification of data to be downloaded from iRODS.
-      The selected set of data files is defined by a combination of parameters: studyid, runid, laneid, plexid, target and type (these refer to specifics of the sequencing experiment and data to be retrieved).
-      Each parameter restricts the set of data files that match and will be downloaded; when omitted, samples for all possible values of that parameter are retrieved.
-      At least one of studyid or runid parameters must be specified. laneid/plexid/target/type are optional parameters that can be provided only in combination with studyid or runid;
-      if these are specified without a studyid or runid, the request will be ignored (no iRODS data or metadata download) with a warning
-      - this condition aims to avoid indiscriminate download of thousands of files across all possible runs.
-      These parameters can be specified through the following command line options: --studyid, --runid, --laneid, --plexid, --target and --type.
-
-      --studyid
-            default: -1
-            Sequencing Study ID
-      --runid
-            default: -1
-            Sequencing Run ID
-      --laneid
-            default: -1
-            Sequencing Lane ID
-      --plexid
-            default: -1
-            Sequencing Plex ID
-      --target
-            default: 1
-            Marker of key data product likely to be of interest to customer
-      --type
-            default: cram
-            File type
-
-Alternatively, the user can provide a CSV-format manifest listing a batch of such combinations.
-
-      --manifest_of_lanes
-            default: false
-            Path to a manifest of search terms as specified above.
-            At least one of studyid or runid fields, or another field that matches the list of iRODS metadata fields must be specified; other parameters are not mandatory and corresponding
-            fields in the CSV manifest file can be left blank. laneid/plexid are only considered when provided alongside a studyid or runid. target/type are only considered in combination with studyid, runid, or other fields.
-
-            Example of manifest 1:
-                studyid,runid,laneid,plexid
-                ,37822,2,354
-                5970,37822,,332
-                5970,37822,2,
-
-            Example of manifest 2:
-                sample_common_name,type,target
-                Romboutsia lituseburensis,cram,1
-                Romboutsia lituseburensis,cram,0
-      --manifest_ena
-            default: false
-            Path to a manifest/file of ENA accessions (run, sample or study). Please also set the --accession_type to the appropriate accession type.
------------------------------------------------------------------
- Aliased options
-      --manifest
-            default:
-            Alias for --manifest_of_reads (optional)
------------------------------------------------------------------
- Output options
-      --outdir
-            default: results
-            Path to output folder (optional)
-
-      --cleanup_intermediate_files
-            default: true
-            whether to delete intermediate files from the multiple iterations of SPAdes assembly as generated within Unicycler process
-
------------------------------------------------------------------
- Processing options
-      --unicycler_max_jobs
-            default: 100
-            maximum number of UNICYCLER processes to be run at a given time (within this pipeline run). Upper limit allows to avoid the
-            quick inflation of file count on filesystem due to generation of many (~15k) intermediate assembly files by SPAdes, which will
-            only be cleaned up by a later process (see `isolate` and `careful` options)
-
------------------------------------------------------------------
- Unicycler pipeline options
-      --mode
-            default: normal
-            defines value for Unicycler option --mode and thus the aggressivity of the assembly scaffold resolution task; valid values are: 'conservative', 'normal' or 'bold'
-
------------------------------------------------------------------
- SPAdes assembler options
-      --cutoff_auto
-            default: false
-            sets SPAdes option --cutoff to 'auto'
-
-      --lock_phred
-            default: false
-            sets SPAdes option --phred-offset to 33 (useful when reads quality information is missing e.g. when using SRAlite fastq reads)
-
-      --careful
-            default: false
-            enables SPAdes option --careful (sets careful running mode; this parameter is exclusive of --isolate).
-            WARNING: Please use this with caution; this option is only recommended for SMALL genomes e.g. viral genomes.
-            Setting `careful = true` enables advanced SPAdes polishing/error correction; when applied to bacterial genomes,
-            this may result in producing MILLIONS of intermediate files during the UNICYCLER process, which is likely to
-            saturate filesystem file count quotas or worse threaten the filesystem integrity.
-            It is recommended to use this in combination with `cleanup_intermediate_files = true` and `unicycler_max_jobs` set to a minimal value e.g. 1.
-
-
-      --isolate
-            default: true
-            enables SPAdes option --isolate (sets isolate running mode; this parameter is exclusive of --careful).
-            This is the native built-in behaviour of Unicycler as a standalone tool.
-            WARNING: Please use this with caution.
-            Setting `isolate = false` enables basic SPAdes polishing/error correction; when applied to bacterial genomes,
-            this may result in producing thousands of intermediate files during the UNICYCLER process, which, when done at scale,
-            may saturate filesystem file count quotas or worse threaten the filesystem integrity.
-            It is recommended to use this in combination with `cleanup_intermediate_files = true` and unicycler_max_jobs set to a low value e.g. 5.
-
-
------------------------------------------------------------------
- Logging options
-      --monochrome_logs
-            default: false
-            Should logs appear in plain ASCII (optional)
-
------------------------------------------------------------------
+```bash
+module load nextflow ISG/singularity
 ```
 
-## Testing
+Submit to LSF:
 
-Developer contributions to this pipeline will only be accepted if all pipeline tests pass. To check:
+```bash
+bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 \
+    nextflow run main.nf \
+        --manifest manifest.csv \
+        --outdir my_output
+```
 
-1. Make your changes.
+### Input
 
-2. Download the test data. A utility script is provided:
+#### Manifest (`--manifest`)
 
-   ```
-   python3 scripts/download_test_data.py
-   ```
+A CSV file with the required header `ID,R1,R2`, containing per-sample paths to paired `.fastq.gz` files:
 
-3. Install [`nf-test`](https://code.askimed.com/nf-test/installation/) (>=0.7.0) and run the tests:
+```
+ID,R1,R2
+sampleA,/path/to/sampleA_1.fastq.gz,/path/to/sampleA_2.fastq.gz
+sampleB,/path/to/sampleB_1.fastq.gz,/path/to/sampleB_2.fastq.gz
+```
 
-   ```
-   nf-test test
-   ```
+Input can also be provided via iRODS query or ENA accession using the `mixed_input` sub-workflow — run `--help` for details.
 
-   If you are not running on the Sanger HPC, run the above command with `--profile docker` or `--profile singularity` (depending on your system).
+### Output
 
-## Credits
+Results are written to `--outdir` (default: `./results`):
 
-assembly_unicycler_short_read was inspired by the [nf-co.re/bacass](https://github.com/nf-core/bacass) and contains components derived from that pipeline.
+```
+results/
+  <sample_ID>/
+    assembly.fasta                   # Unicycler assembled contigs
+  quast/
+    report.tsv                       # Per-sample QUAST assembly statistics
+    summary.tsv                      # Cross-sample QUAST summary
+```
 
-## Support
+### Parameters
 
-For further information or help, don't hesitate to get in touch via [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk).
+**Output options**
 
-## Citations
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--outdir` | `path` | `results` | Directory where results are written. |
+| `--cleanup_intermediate_files` | `boolean` | `true` | Delete SPAdes intermediate files generated during Unicycler assembly. Strongly recommended — SPAdes generates ~15,000 files per sample. |
 
-If you use `assembly_unicycler_short_read` for your analysis, please cite the `nf-co.re/bacass` pipeline using the following doi: [10.5281/zenodo.2669428](https://doi.org/10.5281/zenodo.2669428)
+---
 
-An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
+**Processing options**
 
-You can cite the `nf-co.re` publication as follows:
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--unicycler_max_jobs` | `integer` | `100` | Maximum number of concurrent Unicycler processes. Reduce to limit intermediate file accumulation on shared filesystems. |
 
-> **The nf-core framework for community-curated bioinformatics pipelines.**
->
-> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
->
-> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
+---
+
+**Unicycler options**
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--mode` | `string` | `normal` | Unicycler assembly mode: `conservative`, `normal`, or `bold`. |
+
+---
+
+**SPAdes options**
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--isolate` | `boolean` | `true` | Enable SPAdes `--isolate` mode (recommended for bacterial isolates). Mutually exclusive with `--careful`. |
+| `--careful` | `boolean` | `false` | Enable SPAdes `--careful` mode. Recommended for small or viral genomes only. :warning: Can generate millions of intermediate files on bacterial genomes — use with `--cleanup_intermediate_files true` and low `--unicycler_max_jobs`. Mutually exclusive with `--isolate`. |
+| `--cutoff_auto` | `boolean` | `false` | Set SPAdes k-mer coverage cutoff to `auto`. |
+| `--lock_phred` | `boolean` | `false` | Force PHRED offset 33 (useful for SRAlite FASTQ reads with missing quality encoding). |
+
+---
+
+**Logging options**
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--monochrome_logs` | `boolean` | `false` | Output logs in plain ASCII. |
+
+### Advanced usage
+
+#### Controlling filesystem impact
+
+SPAdes generates a large number of intermediate files per sample. To avoid saturating filesystem quotas when running at scale, keep `--cleanup_intermediate_files true` (default) and reduce `--unicycler_max_jobs`:
+
+```bash
+nextflow run main.nf --manifest manifest.csv --unicycler_max_jobs 5 --outdir my_output
+```
+
+#### Careful mode for small genomes
+
+For small or viral genomes where careful SPAdes error correction is beneficial:
+
+```bash
+nextflow run main.nf --manifest manifest.csv --isolate false --careful true --unicycler_max_jobs 1 --outdir my_output
+```
+
+### Dependencies
+
+All software dependencies are containerised. No external databases are required.
+
+## Software versions
+
+| Software | Version | Image |
+| --- | --- | --- |
+| Unicycler | 0.5.1 | `quay.io/sangerpathogens/unicycler:0.5.1-vanillaspades` |
+| QUAST | 5.0.2 | `quay.io/biocontainers/quast:5.0.2--py36pl5321hcac48a8_7` |
+
+See `modules/` for pinned container versions.
+
+## Troubleshooting
+
+- **Filesystem quota exceeded**: reduce `--unicycler_max_jobs` and ensure `--cleanup_intermediate_files true`.
+- **`--isolate` and `--careful` conflict**: these flags are mutually exclusive. Use `--isolate false --careful true` to disable isolate mode and enable careful mode.
+- **Poor assembly quality**: try `--mode bold` for more aggressive bridging, or `--mode conservative` for fewer false joins.
+- **Resuming a failed run**: add `-resume` to restart from cached intermediate results.
+- For further help, check `.nextflow.log` and the per-process logs in the `work/` directory.
+
+## Issues and Contributions
+
+If you find an issue with this pipeline, or would like to suggest an improvement, please log an issue or open a pull request on this repository.
+
+If you are at Sanger and need internal support, you can raise an issue on the PAM Freshservice portal: https://sanger.freshservice.com/support/catalog/items/426
