@@ -94,44 +94,44 @@ results/
 
 **Output options**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `--outdir` | `path` | `results` | Directory where results are written. |
-| `--cleanup_intermediate_files` | `boolean` | `true` | Delete SPAdes intermediate files generated during Unicycler assembly. Strongly recommended — SPAdes generates ~15,000 files per sample. |
+| Option                         | Type      | Default   | Description                                                                                                                             |
+| ------------------------------ | --------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `--outdir`                     | `path`    | `results` | Directory where results are written.                                                                                                    |
+| `--cleanup_intermediate_files` | `boolean` | `true`    | Delete SPAdes intermediate files generated during Unicycler assembly. Strongly recommended — SPAdes generates ~15,000 files per sample. |
 
 ---
 
 **Processing options**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `--unicycler_max_jobs` | `integer` | `100` | Maximum number of concurrent Unicycler processes. Reduce to limit intermediate file accumulation on shared filesystems. |
+| Option                 | Type      | Default | Description                                                                                                             |
+| ---------------------- | --------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `--unicycler_max_jobs` | `integer` | `100`   | Maximum number of concurrent Unicycler processes. Reduce to limit intermediate file accumulation on shared filesystems. |
 
 ---
 
 **Unicycler options**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
+| Option   | Type     | Default  | Description                                                   |
+| -------- | -------- | -------- | ------------------------------------------------------------- |
 | `--mode` | `string` | `normal` | Unicycler assembly mode: `conservative`, `normal`, or `bold`. |
 
 ---
 
 **SPAdes options**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `--isolate` | `boolean` | `true` | Enable SPAdes `--isolate` mode (recommended for bacterial isolates). Mutually exclusive with `--careful`. |
-| `--careful` | `boolean` | `false` | Enable SPAdes `--careful` mode. Recommended for small or viral genomes only. :warning: Can generate millions of intermediate files on bacterial genomes — use with `--cleanup_intermediate_files true` and low `--unicycler_max_jobs`. Mutually exclusive with `--isolate`. |
-| `--cutoff_auto` | `boolean` | `false` | Set SPAdes k-mer coverage cutoff to `auto`. |
-| `--lock_phred` | `boolean` | `false` | Force PHRED offset 33 (useful for SRAlite FASTQ reads with missing quality encoding). |
+| Option          | Type      | Default | Description                                                                                                                                                                                                                                                                 |
+| --------------- | --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--isolate`     | `boolean` | `true`  | Enable SPAdes `--isolate` mode (recommended for bacterial isolates). Mutually exclusive with `--careful`.                                                                                                                                                                   |
+| `--careful`     | `boolean` | `false` | Enable SPAdes `--careful` mode. Recommended for small or viral genomes only. :warning: Can generate millions of intermediate files on bacterial genomes — use with `--cleanup_intermediate_files true` and low `--unicycler_max_jobs`. Mutually exclusive with `--isolate`. |
+| `--cutoff_auto` | `boolean` | `false` | Set SPAdes k-mer coverage cutoff to `auto`.                                                                                                                                                                                                                                 |
+| `--lock_phred`  | `boolean` | `false` | Force PHRED offset 33 (useful for SRAlite FASTQ reads with missing quality encoding).                                                                                                                                                                                       |
 
 ---
 
 **Logging options**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
+| Option              | Type      | Default | Description                 |
+| ------------------- | --------- | ------- | --------------------------- |
 | `--monochrome_logs` | `boolean` | `false` | Output logs in plain ASCII. |
 
 ### Advanced usage
@@ -158,10 +158,10 @@ All software dependencies are containerised. No external databases are required.
 
 ## Software versions
 
-| Software | Version | Image |
-| --- | --- | --- |
-| Unicycler | 0.5.1 | `quay.io/sangerpathogens/unicycler:0.5.1-vanillaspades` |
-| QUAST | 5.0.2 | `quay.io/biocontainers/quast:5.0.2--py36pl5321hcac48a8_7` |
+| Software  | Version | Image                                                     |
+| --------- | ------- | --------------------------------------------------------- |
+| Unicycler | 0.5.1   | `quay.io/sangerpathogens/unicycler:0.5.1-vanillaspades`   |
+| QUAST     | 5.0.2   | `quay.io/biocontainers/quast:5.0.2--py36pl5321hcac48a8_7` |
 
 See `modules/` for pinned container versions.
 
