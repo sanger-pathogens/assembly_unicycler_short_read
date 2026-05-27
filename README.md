@@ -75,6 +75,10 @@ sampleA,/path/to/sampleA_1.fastq.gz,/path/to/sampleA_2.fastq.gz
 sampleB,/path/to/sampleB_1.fastq.gz,/path/to/sampleB_2.fastq.gz
 ```
 
+#### Generating a manifest
+
+**Sanger users:** the [manifest_generator](https://gitlab.internal.sanger.ac.uk/sanger-pathogens/pipelines/manifest_generator/) tool can generate a compatible `ID,R1,R2` manifest from a directory of FASTQ files or from iRODS.
+
 Input can also be provided via iRODS query or ENA accession using the `mixed_input` sub-workflow — run `--help` for details.
 
 ### Output
