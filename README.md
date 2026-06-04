@@ -183,7 +183,9 @@ See `modules/` for pinned container versions.
 - **`--isolate` and `--careful` conflict**: these flags are mutually exclusive. Use `--isolate false --careful true` to disable isolate mode and enable careful mode.
 - **Poor assembly quality**: try `--mode bold` for more aggressive bridging, or `--mode conservative` for fewer false joins.
 - **Resuming a failed run**: add `-resume` to restart from cached intermediate results.
-- For further help, check `.nextflow.log` and the per-process logs in the `work/` directory.
+- For further help, check `.nextflow.log` and the per-process `.command.log` logs in the `work/` directory.
+
+Sanger users may find [this page](https://ssg-confluence.internal.sanger.ac.uk/spaces/PaMI/pages/181078206/General+pipeline+info#Generalpipelineinfo-Troubleshootingafailedpipelinerunandsendingabugreport) useful for troubleshooting Nextflow pipeline runs.
 
 ## Issues and Contributions
 
