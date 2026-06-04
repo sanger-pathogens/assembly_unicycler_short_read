@@ -95,11 +95,15 @@ Results are written to `--outdir` (default: `./results`):
 
 ```
 results/
+  summary_quast_report.tsv              # Cross-sample QUAST summary
   <sample_ID>/
-    assembly.fasta                   # Unicycler assembled contigs
-  quast/
-    report.tsv                       # Per-sample QUAST assembly statistics
-    summary.tsv                      # Cross-sample QUAST summary
+    unicycler/
+      <sample_ID>.assembly.fa           # Unicycler assembled contigs
+      <sample_ID>.assembly.gfa          # Assembly graph
+      <sample_ID>.unicycler.log         # Unicycler log
+      workdir.txt                       # Path to Nextflow work directory
+    quast/
+      <sample_ID>_assembly_stats.txt    # Per-sample QUAST report
 ```
 
 ### Parameters
