@@ -24,7 +24,7 @@ The pipeline performs the following steps:
 1. Clone this repository (including submodules):
 
    ```bash
-   git clone --recurse-submodules <repo-url>
+   git clone --recurse-submodules https://github.com/sanger-pathogens/assembly_unicycler_short_read
    cd assembly_unicycler_short_read
    ```
 
