@@ -75,6 +75,7 @@ It is thus recommended to use the `git clone` approach described above, adding t
 
 ```bash
 git checkout <revision_tag> # e.g. revision_tag can be "v2.0.0"
+git submodule init --update
 git pull --recurse-submodules
 ```
 
