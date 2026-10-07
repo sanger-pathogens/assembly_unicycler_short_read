@@ -60,6 +60,7 @@ assembly-unicycler-short-read --help
 ```
 
 Submit to LSF:
+
 ```bash
 jobname="my_assembly-unicycler-short-read_run" # you can edit this!
 bsub -o ${jobname}.%J.o -e ${jobname}.%J.e -J ${jobname} -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 \
@@ -76,7 +77,6 @@ It is thus recommended to use the `git clone` approach described above, adding t
 git checkout <revision_tag> # e.g. revision_tag can be "v2.0.0"
 git pull --recurse-submodules
 ```
-
 
 ### Input
 
