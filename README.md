@@ -28,16 +28,13 @@ The pipeline performs the following steps:
    cd assembly_unicycler_short_read
    ```
 
-2. To run with `docker`, use the `-profile docker` option:
+2. To run the pipeline using Docker container to support module dependencies, use the `-profile docker` option:
 
    ```bash
-   nextflow run main.nf \
-       -profile docker \
-       --manifest manifest.csv \
-       --outdir my_output
+   nextflow run main.nf -profile docker [options]
    ```
 
-   Other profiles are also supported (`singularity`).  
+   Other profiles are also supported (`singularity`, `conda`).  
    :warning: If no profile is specified the pipeline will run with the Sanger HPC-specific configuration.
 
 3. Once the run has finished successfully and you have inspected the output, clean up intermediate files. The `work/` directory and `.nextflow.log` are useful for troubleshooting — do not delete them until you are satisfied the outputs are correct:
@@ -48,22 +45,38 @@ The pipeline performs the following steps:
 
    Alternatively, use `nextflow clean` for more fine-grained control over which runs and intermediate files are removed.
 
-#### Using on the Sanger farm
+#### Using on the Sanger "farm" HPC
 
-Load Nextflow and Singularity:
+First load the latest pipeline module:
 
 ```bash
-module load nextflow ISG/singularity
+module load assembly-unicycler-short-read
+```
+
+To run on the command line with `assembly-unicycler-short-read <optionns>`. For instance, to see a help message:
+
+```bash
+assembly-unicycler-short-read --help
 ```
 
 Submit to LSF:
+```bash
+jobname="my_assembly-unicycler-short-read_run" # you can edit this!
+bsub -o ${jobname}.%J.o -e ${jobname}.%J.e -J ${jobname} -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 \
+   assembly-unicycler-short-read [options]
+```
+
+#### From code archive downloaded from the Github Release section or from Zenodo
+
+Please be aware that the code archive asset attached to a release will have empty folders for the dependency submodules `assorted-sub-workflows` ([repository](https://github.com/sanger-pathogens/assorted-sub-workflows)) and `lib` (points to `nextflowtool` [repository](https://github.com/sanger-pathogens/nextflowtool)). The code executed from these archives will therefore **NOT** be functional. Unfortunately, the `.git` folder will be missing too, meaning that it is not a working `git` repository and submodule folders _cannot_ be populated with `git submodule init`.
+
+It is thus recommended to use the `git clone` approach described above, adding the commands below to get the code version referred to in the release:
 
 ```bash
-bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 \
-    nextflow run main.nf \
-        --manifest manifest.csv \
-        --outdir my_output
+git checkout <revision_tag> # e.g. revision_tag can be "v2.0.0"
+git pull --recurse-submodules
 ```
+
 
 ### Input
 
@@ -85,9 +98,8 @@ sampleB,/path/to/sampleB_1.fastq.gz,/path/to/sampleB_2.fastq.gz
 
 This pipeline supports additional input modes via the `mixed_input` sub-workflow — these can be combined in a single run:
 
-- **iRODS** (Sanger internal) — specify `--studyid`, `--runid`, `--laneid`, and/or `--plexid` on the command line; at least `--studyid` or `--runid` is required. A batch CSV of multiple iRODS searches can be supplied via `--manifest_of_lanes`. Requires an active iRODS session (`iinit`).
+- **iRODS** (Sanger users only) — specify `--studyid`, `--runid`, `--laneid`, and/or `--plexid` on the command line; at least `--studyid` or `--runid` is required. A batch CSV of multiple iRODS searches can be supplied via `--manifest_of_lanes`. Requires an active iRODS session (`iinit`).
 - **ENA download** — supply a file of ENA accession IDs via `--manifest_ena`. Set `--accession_type` to `run` (default), `sample`, or `study`.
-- **Directory scan** — provide a path to a directory of FASTQ files via `--manifest_from_dir`. Use `--fastq_validation` (`strict`/`relaxed`, default: `strict`) and `--max_depth` (default: `0`) to control discovery.
 
 Run `--help` for the full parameter list.
 
