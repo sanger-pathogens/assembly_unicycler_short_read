@@ -53,7 +53,7 @@ First load the latest pipeline module:
 module load assembly-unicycler-short-read
 ```
 
-To run on the command line with `assembly-unicycler-short-read <optionns>`. For instance, to see a help message:
+To run on the command line with `assembly-unicycler-short-read [options]`. For instance, to see a help message:
 
 ```bash
 assembly-unicycler-short-read --help
