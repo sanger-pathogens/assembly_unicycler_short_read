@@ -10,8 +10,6 @@ proc ModulesHelp { } {
   puts stderr "Custom deployment managed by pathogen informatics: {{path}}"
   puts stderr "Executables:"
   puts stderr "\tassembly-unicycler-short-read"
-  puts stderr "\tgenerate_manifest.sh"
-  puts stderr "\tgenerate_manifest_from_lanes.sh"
   puts stderr "Home page: {{repo_url}}"
 }
 
@@ -19,8 +17,6 @@ proc ModulesHelp { } {
 module-whatis "Custom deployment managed by pathogen informatics: {{path}}"
 module-whatis "Executables:"
 module-whatis "assembly-unicycler-short-read"
-module-whatis "generate_manifest.sh"
-module-whatis "generate_manifest_from_lanes.sh"
 
 # Load prerequisite modules
 module switch nextflow
